@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.Test;
+
 /**
  * 
  * @description 数据库封装类
@@ -19,6 +21,11 @@ import java.util.Map;
  * @date 20200331
  */
 public class DBHelper {
+	@Test
+	public void test() {
+		DBHelper dbHelper = new DBHelper();
+		dbHelper.query("select *from USERS");
+	}
 
 	/**
 	 * 加载驱动
