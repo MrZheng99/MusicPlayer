@@ -1,47 +1,63 @@
-create database MUSICPLAYER default character set utf8;
+-- oracle
 -- 用户表
-create table USERS(
-    id int primary key auto_increment,
-    name varchar(16) unique not null,
-    password varchar(100) not null,
-    headImageUrl varchar(80) not null,
-    sex char(2),
-    age char(2),
-    state char(2)
+drop table USERINFO;
+create table USERINFO(
+    userId number(10) primary key,
+    userName varchar2(16) unique not null,
+    userPassword varchar2(100) not null,
+    headImage blob,
+    email varchar2(50) unique not null,
+    sex number(2),
+    age number(2),
+    state number(2),
+    isOnline number(2)
 );
--- 用户在线表
-create table ONLINEUSERS(
-	 id int primary key auto_increment,
-	 userId int not null,
-	 constraint FK_ONLINEUSERS_id foreign key(userId) references USERS(id)
-);
+create sequence seq_users_id start with 1;
 -- 专辑表
 --create table SONGS(
-	--id int primary key auto_increment,
-	--name varchar(50) not null
-	--singer varchar
+  --id int primary key auto_increment,
+  --name varchar(50) not null
+  --singer varchar
 
 --);
 -- 歌曲表
 create table SONGS(
-	id int primary key auto_increment,
-	name varchar(50) not null,
-	albumName  varchar(50),
-	singer varchar(50) not null,
-	duration varchar(5) not null,
-	lyricUrl varchar(80),
-	songUrl varchar(80) not null
+  songId number(10) primary key,
+  songName varchar2(100) not null,
+  duration number(10) not null,
+  albumName  varchar2(100),
+  singerName varchar2(100) not null,
+  songUrl varchar2(100) not null,
+  imageUrl varchar2(100),
+  lyricUrl varchar2(100)
 );
--- 歌曲图片表
-create table SONGIMAGES(
-	id int primary key auto_increment,
-	imageUrl varchar(80) not null
+drop table SONGS;
+drop table SONGSHEET;
+-- 歌单表(多对多)
+create table SONGSHEET(
+  ssid number(10) primary key,
+  ssname varchar2(50),
+  songId number(10) not null,
+  userId number(10) not null,
+  constraint FK_ONLINEUSERS_userId foreign key(userId) references USERINFO(userId),
+  constraint FK_ONLINEUSERS_songId foreign key(songId) references SONGS(songId),
+  state number(2)
+
 );
--- 歌曲和图片关系表（多对多）
-create table SONGIMAGERELATION(
-	id int primary key auto_increment,
-	songId int not null,
-	imageId int not null,
-	constraint FK_SONGIMAGERELATION_songId foreign key(songId) references SONGS(id),
-	constraint FK_SONGIMAGERELATION_imageId foreign key(imageId) references SONGIMAGES(id)
+create sequence seq_songsheet_id start with 1;
+
+-- 收藏歌单表
+drop table COLLECTIONSONGSHEET;
+
+create table COLLECTIONSONGSHEET(
+  cssid number(10) primary key,
+  cssname varchar2(50),
+  songId number(10) not null,
+  userId number(10) not null,
+  state number(2),
+  constraint FK_COLLECTIONSONGSHEET_userId foreign key(userId) references USERINFO(userId),
+  constraint FK_COLLECTIONSONGSHEET_songId foreign key(songId) references SONGS(songId)
+
 );
+create sequence seq_collectionSongSheet_id start with 1;
+select *from SONGS;

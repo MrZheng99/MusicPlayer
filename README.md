@@ -17,4 +17,4 @@
    * `com.zj.musicplayer.controller` 业务逻辑控制
    * `images` 需要的图片素材
 ## 开发环境(64bit)
-   * jdk 1.8 + Eclipse(2020) + SWT + MySql(5.7.4)
+   * jdk 1.8 + Eclipse(2020) + SWT + Oracle(10g)
