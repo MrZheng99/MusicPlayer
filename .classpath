@@ -18,5 +18,6 @@
 	<classpathentry kind="lib" path="libs/org.eclipse.ui.workbench_3.107.1.v20160120-2131.jar"/>
 	<classpathentry kind="lib" path="libs/jl1.0.1.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="lib" path="swing2swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
