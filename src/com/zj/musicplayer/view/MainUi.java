@@ -15,6 +15,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.zj.musicplayer.utils.ImageUtil;
@@ -68,6 +70,8 @@ public class MainUi {
 		shell = new Shell(SWT.NONE);
 		createCompsite();
 		initTop();
+		initLeft();
+		initBottom();
 		initShellEvent();
 		setShellInitSize();
 
@@ -83,18 +87,20 @@ public class MainUi {
 		shell.setLayout(null);
 
 		compositeTop = new Composite(shell, SWT.NONE);
-
 		compositeTop.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		compositeTop.setLayout(null);
 
 		compositeLeft = new Composite(shell, SWT.NONE);
 		compositeLeft.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLUE));
+		compositeLeft.setLayout(null);
 
 		compositeRight = new Composite(shell, SWT.NONE);
-		compositeRight.setBackground(SWTResourceManager.getColor(SWT.COLOR_DARK_YELLOW));
+		compositeRight.setBackground(SWTResourceManager.getColor(SWT.COLOR_CYAN));
+		compositeRight.setLayout(null);
 
 		compositeBottom = new Composite(shell, SWT.NONE);
-		compositeBottom.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		compositeBottom.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		compositeBottom.setLayout(null);
 
 	}
 
@@ -148,10 +154,10 @@ public class MainUi {
 		labelClose.setAlignment(SWT.CENTER);
 		labelMax.setAlignment(SWT.CENTER);
 		labelMini.setAlignment(SWT.CENTER);
-
+		initCompositeTopEvent();
 	}
 
-	private void refeshTop() {
+	private void refreshTop() {
 
 		int compositeTopHeight = compositeTop.getSize().y;
 		int compositeTopWidth = compositeTop.getSize().x / 10;
@@ -178,6 +184,94 @@ public class MainUi {
 		compositeTop.layout();
 	}
 
+	private TreeItem tiFindMusic;
+	private TreeItem tiDownload;
+	private TreeItem tiMyLove;
+	private Tree treeFunction;
+	private Composite compositeSong;
+	private Label labelSongPic;
+	private Label labelSinger;
+	private Label labelSongName;
+	private Label labelJoinLove;
+
+	private void initLeft() {
+		treeFunction = new Tree(compositeLeft, SWT.NONE);
+
+		TreeItem tiRecommend = new TreeItem(treeFunction, SWT.NONE);
+		tiRecommend.setText("推荐");
+
+		tiFindMusic = new TreeItem(tiRecommend, SWT.NONE);
+		tiFindMusic.setText("发现音乐");
+		tiRecommend.setExpanded(true);
+
+		TreeItem tiMyMusic = new TreeItem(treeFunction, SWT.NONE);
+		tiMyMusic.setText("我的音乐");
+
+		tiDownload = new TreeItem(tiMyMusic, SWT.NONE);
+		tiDownload.setText("我的下载");
+		tiMyMusic.setExpanded(true);
+
+		TreeItem tiCreateSongList = new TreeItem(treeFunction, SWT.NONE);
+		tiCreateSongList.setText("歌单列表");
+
+		tiMyLove = new TreeItem(tiCreateSongList, SWT.NONE);
+		tiMyLove.setText("我的喜欢");
+		tiCreateSongList.setExpanded(true);
+
+		compositeSong = new Composite(compositeLeft, SWT.NONE);
+
+		compositeSong.setLayout(null);
+
+		labelSongPic = new Label(compositeSong, SWT.CENTER);
+		labelSinger = new Label(compositeSong, SWT.NONE);
+		labelSinger.setText("歌手");
+		labelSongName = new Label(compositeSong, SWT.NONE);
+		labelSongName.setText("歌名");
+		labelJoinLove = new Label(compositeSong, SWT.CENTER);
+		labelJoinLove.setText("喜欢");
+		initCompositeLeftEvent();
+	}
+
+	private void refreshLeft() {
+		int compositeLeftWidth = compositeLeft.getSize().x;
+		int compositeLeftHeight = compositeLeft.getSize().y;
+		treeFunction.setBounds(0, 0, compositeLeftWidth, compositeLeftHeight - 38);
+		compositeSong.setBounds(0, compositeLeftHeight - 38, compositeLeftWidth, 38);
+		labelSongPic.setBounds(0, 0, 38, 38);
+		labelSongPic.setImage(ImageUtil.scaleImage("src/images/java.jpg", 38, 38));
+
+		labelSongName.setBounds(38, 0, compositeLeftWidth - 38, 19);
+		labelSinger.setBounds(38, 19, compositeLeftWidth - 57, 19);
+		labelJoinLove.setBounds(compositeLeftWidth - 19, 19, 19, 19);
+		labelJoinLove.setImage(ImageUtil.scaleImage("src/images/love.png", 19, 19));
+		compositeLeft.layout();
+	}
+
+	private Label labelLastSong;
+	private Label labelPlayStop;
+	private Label labelNextSong;
+
+	private void initBottom() {
+		labelLastSong = new Label(compositeBottom, SWT.NONE);
+
+		labelPlayStop = new Label(compositeBottom, SWT.NONE);
+
+		labelNextSong = new Label(compositeBottom, SWT.NONE);
+		initCompositeBottomEvent();
+	}
+
+	private void refreshBottom() {
+//		int compositeBottomWidth = compositeBottom.getSize().x;
+//		int compositeBottomHeight = compositeBottom.getSize().y;
+		labelLastSong.setBounds(0, 12, 30, 30);
+		labelLastSong.setImage(ImageUtil.scaleImage("src/images/lastsong.png", 30, 30));
+		labelPlayStop.setBounds(35, 12, 30, 30);
+		labelPlayStop.setImage(ImageUtil.scaleImage("src/images/start.png", 30, 30));
+		labelNextSong.setBounds(70, 12, 30, 30);
+		labelNextSong.setImage(ImageUtil.scaleImage("src/images/nextsong.png", 30, 30));
+		compositeBottom.layout();
+	}
+
 	private boolean down = false;
 	private int clickX;
 	private int clickY;
@@ -190,13 +284,20 @@ public class MainUi {
 				shellHeight = shell.getSize().y;
 				shellWidth = shell.getSize().x;
 				compositeTop.setBounds(0, 0, shellWidth, shellHeight / 10);
-				compositeLeft.setBounds(0, shellHeight / 10, shellWidth / 10, 8 * shellHeight / 10);
-				compositeRight.setBounds(shellWidth / 10, shellHeight / 10, 9 * shellWidth / 10, 8 * shellHeight / 10);
+				compositeLeft.setBounds(0, shellHeight / 10, 20 + shellWidth / 10, 8 * shellHeight / 10);
+				compositeRight.setBounds(shellWidth / 10 + 20, shellHeight / 10, 9 * shellWidth / 10 - 20,
+						8 * shellHeight / 10);
 
 				compositeBottom.setBounds(0, 9 * shellHeight / 10, shellWidth, shellHeight / 10);
-				refeshTop();
+				refreshTop();
+				refreshLeft();
+				refreshBottom();
 			}
 		});
+
+	}
+
+	private void initCompositeTopEvent() {
 		// 设置位置，即界面随着拖动而移动
 		compositeTop.addMouseMoveListener(new MouseMoveListener() {
 			public void mouseMove(MouseEvent e) {
@@ -238,16 +339,16 @@ public class MainUi {
 				}
 			}
 		});
-//		labelMax.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseDown(MouseEvent e) {
-//				if (shell.getLocation().x != 0 || shell.getLocation().y != 0) {
-//					shell.setBounds(0, 0, dimension.width, dimension.height);
-//
-//				}
-//
-//			}
-//		});
+//				labelMax.addMouseListener(new MouseAdapter() {
+//					@Override
+//					public void mouseDown(MouseEvent e) {
+//						if (shell.getLocation().x != 0 || shell.getLocation().y != 0) {
+//							shell.setBounds(0, 0, dimension.width, dimension.height);
+		//
+//						}
+		//
+//					}
+//				});
 		labelClose.addMouseTrackListener(new MouseTrackAdapter() {
 			// 不放在图标上的效果
 			@Override
@@ -305,6 +406,7 @@ public class MainUi {
 				labelMax.setImage(ImageUtil.scaleImage("src/images/btn_max_down.png", 25, 25));
 
 			}
+
 		});
 		labelSetting.addMouseTrackListener(new MouseTrackAdapter() {
 			// 不放在图标上的效果
@@ -320,13 +422,13 @@ public class MainUi {
 				labelSetting.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
 			}
-			// 点击图标的效果
 
 			@Override
 			public void mouseEnter(MouseEvent e) {
 				labelSetting.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
 			}
+
 		});
 		labelChangeTheme.addMouseTrackListener(new MouseTrackAdapter() {
 			// 不放在图标上的效果
@@ -342,13 +444,13 @@ public class MainUi {
 				labelChangeTheme.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
 			}
-			// 点击图标的效果
 
 			@Override
 			public void mouseEnter(MouseEvent e) {
 				labelChangeTheme.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
 			}
+
 		});
 		labelUserName.addMouseTrackListener(new MouseTrackAdapter() {
 			// 不放在图标上的效果
@@ -364,13 +466,13 @@ public class MainUi {
 				labelUserName.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
 			}
-			// 点击图标的效果
 
 			@Override
 			public void mouseEnter(MouseEvent e) {
 				labelUserName.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
 			}
+
 		});
 		labelSearch.addMouseTrackListener(new MouseTrackAdapter() {
 			// 不放在图标上的效果
@@ -386,7 +488,6 @@ public class MainUi {
 				labelSearch.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 
 			}
-			// 点击图标的效果
 
 			@Override
 			public void mouseEnter(MouseEvent e) {
@@ -402,5 +503,30 @@ public class MainUi {
 
 			}
 		});
+	}
+
+	private void initCompositeLeftEvent() {
+		labelSongPic.addMouseTrackListener(new MouseTrackAdapter() {
+			@Override
+			public void mouseEnter(MouseEvent e) {
+				labelSongPic.setImage(ImageUtil.scaleImage("src/images/right.png", 38, 38));
+				labelSongPic.setBackgroundImage(ImageUtil.scaleImage("src/images/java.jpg", 38, 38));
+			}
+
+			@Override
+			public void mouseExit(MouseEvent e) {
+				labelSongPic.setImage(ImageUtil.scaleImage("src/images/java.jpg", 38, 38));
+
+			}
+		});
+	}
+
+	private void initCompositeBottomEvent() {
+		labelPlayStop.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDown(MouseEvent e) {
+			}
+		});
+
 	}
 }

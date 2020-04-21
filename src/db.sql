@@ -21,6 +21,7 @@ create sequence seq_users_id start with 1;
 
 --);
 -- 歌曲表
+drop table SONGS;
 create table SONGS(
   songId number(10) primary key,
   songName varchar2(100) not null,
@@ -31,7 +32,15 @@ create table SONGS(
   imageUrl varchar2(100),
   lyricUrl varchar2(100)
 );
-drop table SONGS;
+-- 歌曲排行榜
+create table SONGRANKLIST(
+	srlId number(10) primary key,
+	songId number(10) not null unique,
+	playNumber number(5) not null,
+	constraint FK_SONGRANKLIST_songId foreign key(songId) references SONGS(songId)
+);
+create sequence seq_songranklist_id start with 1;
+
 drop table SONGSHEET;
 -- 歌单表(多对多)
 create table SONGSHEET(
@@ -39,8 +48,8 @@ create table SONGSHEET(
   ssname varchar2(50),
   songId number(10) not null,
   userId number(10) not null,
-  constraint FK_ONLINEUSERS_userId foreign key(userId) references USERINFO(userId),
-  constraint FK_ONLINEUSERS_songId foreign key(songId) references SONGS(songId),
+  constraint FK_SONGSHEET_userId foreign key(userId) references USERINFO(userId),
+  constraint FK_SONGSHEET_songId foreign key(songId) references SONGS(songId),
   state number(2)
 
 );

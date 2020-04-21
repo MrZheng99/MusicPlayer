@@ -12,7 +12,7 @@
 	<classpathentry kind="lib" path="libs/org.eclipse.jface_3.11.1.v20160128-1644.jar"/>
 	<classpathentry kind="lib" path="libs/org.eclipse.jface.text_3.10.0.v20150603-1752.jar"/>
 	<classpathentry kind="lib" path="libs/org.eclipse.osgi_3.10.102.v20160118-1700.jar"/>
-	<classpathentry kind="lib" path="libs/org.eclipse.swt.win32.win32.x86_64_3.104.2.v20160212-1350.jar"/>
+	<classpathentry kind="lib" path="libs/org.eclipse.swt.win32.win32.x86_64_3.104.2.v20160212-1350.jar" sourcepath="libs/org.eclipse.swt.win32.win32.x86_64_3.104.2.v20160212-1350.jar"/>
 	<classpathentry kind="lib" path="libs/org.eclipse.text_3.5.400.v20150505-1044.jar"/>
 	<classpathentry kind="lib" path="libs/org.eclipse.ui.forms_3.6.200.v20150506-2029.jar"/>
 	<classpathentry kind="lib" path="libs/org.eclipse.ui.workbench_3.107.1.v20160120-2131.jar"/>
