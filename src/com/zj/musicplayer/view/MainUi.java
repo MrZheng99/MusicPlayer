@@ -4,12 +4,17 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.events.MouseTrackAdapter;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -19,6 +24,7 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import com.zj.musicplayer.utils.ConstantData;
 import com.zj.musicplayer.utils.ImageUtil;
 
 public class MainUi {
@@ -74,7 +80,7 @@ public class MainUi {
 		initBottom();
 		initShellEvent();
 		setShellInitSize();
-
+		saveConstantData();
 	}
 
 	private void setShellInitSize() {
@@ -82,6 +88,14 @@ public class MainUi {
 		shell.setBounds(dimension.width / 4, dimension.height / 4, dimension.width / 2, dimension.height / 2);
 
 	}
+
+	private void saveConstantData() {
+		if (ConstantData.compositeTopTextSearch == null && textSearch != null) {
+			ConstantData.compositeTopTextSearch = textSearch;
+		}
+	}
+
+	private StackLayout stackLayout = new StackLayout();
 
 	private void createCompsite() {
 		shell.setLayout(null);
@@ -96,7 +110,7 @@ public class MainUi {
 
 		compositeRight = new Composite(shell, SWT.NONE);
 		compositeRight.setBackground(SWTResourceManager.getColor(SWT.COLOR_CYAN));
-		compositeRight.setLayout(null);
+		compositeRight.setLayout(stackLayout);
 
 		compositeBottom = new Composite(shell, SWT.NONE);
 		compositeBottom.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -321,8 +335,34 @@ public class MainUi {
 				down = false;
 			}
 		});
+		// 搜索歌曲
+		labelSearch.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				if (ConstantData.searchSongUi != null) {
+					ConstantData.searchSongUi.dispose();
+				}
+				ConstantData.searchSongUi = new SearchSongUi(compositeRight, SWT.NONE);
+
+				stackLayout.topControl = ConstantData.searchSongUi;
+			}
+		});
+		textSearch.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// 回车键监听
+				if (e.keyCode == SWT.CR) {
+					if (ConstantData.searchSongUi != null) {
+						ConstantData.searchSongUi.dispose();
+					}
+					ConstantData.searchSongUi = new SearchSongUi(compositeRight, SWT.NONE);
+					stackLayout.topControl = ConstantData.searchSongUi;
+				}
+			}
+		});
 
 		labelClose.addMouseListener(new MouseAdapter() {
+
 			@Override
 			public void mouseDown(MouseEvent e) {
 				shell.dispose();
@@ -499,13 +539,31 @@ public class MainUi {
 		textSearch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDown(MouseEvent e) {
-				textSearch.setText("");
-
+				if (textSearch.getText().trim().equals("请输入歌手/歌曲名称")) {
+					textSearch.setText("");
+				}
 			}
 		});
 	}
 
 	private void initCompositeLeftEvent() {
+		// 切换面板
+		treeFunction.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				TreeItem ti = (TreeItem) e.item; // 获取选择节点
+				String itName = ti.getText().trim();
+				switch (itName) {
+				case "":
+					if (ConstantData.searchSongUi == null) {
+						ConstantData.searchSongUi = new SearchSongUi(compositeRight, SWT.NONE);
+					}
+					stackLayout.topControl = ConstantData.searchSongUi;
+					break;
+				}
+			}
+		});
+		/*****************/
 		labelSongPic.addMouseTrackListener(new MouseTrackAdapter() {
 			@Override
 			public void mouseEnter(MouseEvent e) {
@@ -529,4 +587,5 @@ public class MainUi {
 		});
 
 	}
+
 }
