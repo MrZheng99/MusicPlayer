@@ -180,7 +180,7 @@ public class MainUi {
 
 		textSearch.setBounds(compositeTopWidth * 2, compositeTopHeight / 4, compositeTopWidth * 2, 25);
 
-//		labelSearch.setImage(ImageUtil.scaleImage("src/images/search.png", 25, 25));
+		// labelSearch.setImage(ImageUtil.scaleImage("src/images/search.png", 25, 25));
 
 		labelSearch.setBounds(compositeTopWidth * 4, compositeTopHeight / 4, 50, 25);
 		labelHead.setBounds(compositeTopWidth * 6, compositeTopHeight / 4, 25, 25);
@@ -244,6 +244,10 @@ public class MainUi {
 		labelJoinLove = new Label(compositeSong, SWT.CENTER);
 		labelJoinLove.setText("喜欢");
 		initCompositeLeftEvent();
+		ConstantData.component.put("compositeLeft_labelSongName", labelSongName);
+		ConstantData.component.put("compositeLeft_labelSongPic", labelSongPic);
+		ConstantData.component.put("compositeLeft_labelSinger", labelSinger);
+
 	}
 
 	private void refreshLeft() {
@@ -272,11 +276,12 @@ public class MainUi {
 
 		labelNextSong = new Label(compositeBottom, SWT.NONE);
 		initCompositeBottomEvent();
+		ConstantData.component.put("compositeBottom_labelPlayStop", labelPlayStop);
 	}
 
 	private void refreshBottom() {
-//		int compositeBottomWidth = compositeBottom.getSize().x;
-//		int compositeBottomHeight = compositeBottom.getSize().y;
+		// int compositeBottomWidth = compositeBottom.getSize().x;
+		// int compositeBottomHeight = compositeBottom.getSize().y;
 		labelLastSong.setBounds(0, 12, 30, 30);
 		labelLastSong.setImage(ImageUtil.scaleImage("src/images/lastsong.png", 30, 30));
 		labelPlayStop.setBounds(35, 12, 30, 30);
@@ -339,11 +344,11 @@ public class MainUi {
 		labelSearch.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
+
 				if (ConstantData.searchSongUi != null) {
 					ConstantData.searchSongUi.dispose();
 				}
 				ConstantData.searchSongUi = new SearchSongUi(compositeRight, SWT.NONE);
-
 				stackLayout.topControl = ConstantData.searchSongUi;
 			}
 		});
@@ -365,6 +370,15 @@ public class MainUi {
 
 			@Override
 			public void mouseDown(MouseEvent e) {
+				if (ConstantData.playMusicThread != null && ConstantData.playMusicThread.isAlive()) {
+					ConstantData.playMusicThread.interrupt();
+				}
+				if (ConstantData.playOneSong != null && ConstantData.playOneSong.isAlive()) {
+					if (ConstantData.player != null) {
+						ConstantData.player.close();
+					}
+					ConstantData.playOneSong.interrupt();
+				}
 				shell.dispose();
 
 			}
@@ -379,16 +393,16 @@ public class MainUi {
 				}
 			}
 		});
-//				labelMax.addMouseListener(new MouseAdapter() {
-//					@Override
-//					public void mouseDown(MouseEvent e) {
-//						if (shell.getLocation().x != 0 || shell.getLocation().y != 0) {
-//							shell.setBounds(0, 0, dimension.width, dimension.height);
+		// labelMax.addMouseListener(new MouseAdapter() {
+		// @Override
+		// public void mouseDown(MouseEvent e) {
+		// if (shell.getLocation().x != 0 || shell.getLocation().y != 0) {
+		// shell.setBounds(0, 0, dimension.width, dimension.height);
 		//
-//						}
+		// }
 		//
-//					}
-//				});
+		// }
+		// });
 		labelClose.addMouseTrackListener(new MouseTrackAdapter() {
 			// 不放在图标上的效果
 			@Override
@@ -582,7 +596,21 @@ public class MainUi {
 	private void initCompositeBottomEvent() {
 		labelPlayStop.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseDown(MouseEvent e) {
+			public void mouseUp(MouseEvent e) {
+				if (ConstantData.playing) {
+					System.out.println("点击暂停");
+
+					ConstantData.playMusicThread.stopPlay();
+
+					((Label) ConstantData.component.get("compositeBottom_labelPlayStop"))
+							.setImage(ImageUtil.scaleImage("src/images/start.png", 30, 30));
+				} else if (!ConstantData.playing) {
+					System.out.println("点击播放");
+					ConstantData.playMusicThread.startPlay();
+
+					((Label) ConstantData.component.get("compositeBottom_labelPlayStop"))
+							.setImage(ImageUtil.scaleImage("src/images/stop.png", 30, 30));
+				}
 			}
 		});
 

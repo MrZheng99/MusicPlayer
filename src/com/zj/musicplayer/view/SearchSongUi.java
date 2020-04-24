@@ -1,11 +1,12 @@
 package com.zj.musicplayer.view;
 
-import java.util.List;
 import java.util.Map;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -13,11 +14,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import com.zj.musicplayer.controller.MMouseListenerAdapter;
 import com.zj.musicplayer.controller.MMouseTrackListenerAdapter;
+import com.zj.musicplayer.controller.PlayMusicThread;
 import com.zj.musicplayer.model.SongInfoDao;
 import com.zj.musicplayer.utils.ConstantData;
 import com.zj.musicplayer.utils.DateUtil;
+import com.zj.musicplayer.utils.ImageUtil;
 
 /**
  * 
@@ -79,9 +81,8 @@ public class SearchSongUi extends Composite {
 		gd_lblNewLabel_4.widthHint = width - 50;
 		label4.setLayoutData(gd_lblNewLabel_4);
 		SongInfoDao songInfoDao = new SongInfoDao();
-		List<Map<String, String>> list = songInfoDao
-				.findByCondition(ConstantData.compositeTopTextSearch.getText().trim());
-		if (list == null || list.isEmpty()) {
+		ConstantData.listSongInfo = songInfoDao.findAllByName(ConstantData.compositeTopTextSearch.getText().trim());
+		if (ConstantData.listSongInfo == null || ConstantData.listSongInfo.isEmpty()) {
 
 			Label labelTip = new Label(composite, SWT.NONE);
 			labelTip.setAlignment(SWT.CENTER);
@@ -89,7 +90,7 @@ public class SearchSongUi extends Composite {
 			labelTip.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 			ConstantData.compositeTopTextSearch.setFocus();
 		} else {
-			for (Map<String, String> map : list) {
+			for (Map<String, String> map : ConstantData.listSongInfo) {
 
 				Label labelSongName = new Label(composite, SWT.NONE);
 				labelSongName.setAlignment(SWT.CENTER);
@@ -119,11 +120,22 @@ public class SearchSongUi extends Composite {
 				gd_labelDuration.widthHint = width - 50;
 				labelDuration.setLayoutData(gd_labelDuration);
 				/*********** 鼠标事件 ***************/
-				labelSongName.addMouseListener(new MMouseListenerAdapter() {
+				labelSongName.addMouseListener(new MouseListener() {
 
 					@Override
 					public void mouseDown(MouseEvent arg0) {
-						labelSongName.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));
+						setMouseDownEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
+
+					}
+
+					@Override
+					public void mouseUp(MouseEvent arg0) {
+						setMouseUpEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
+					}
+
+					@Override
+					public void mouseDoubleClick(MouseEvent e) {
+						setMouseDoubleClickEvent(labelSongName, labelSingerName);
 
 					}
 				});
@@ -131,12 +143,109 @@ public class SearchSongUi extends Composite {
 				labelSongName.addMouseTrackListener(new MMouseTrackListenerAdapter() {
 					@Override
 					public void mouseEnter(MouseEvent e) {
-						labelSongName.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+						setMouseTrackEnterEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
 					}
 
 					@Override
 					public void mouseExit(MouseEvent e) {
-						labelSongName.setBackground(SWTResourceManager.getColor(SWT.COLOR_DARK_GRAY));
+						setMouseTrackExitEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
+					}
+
+				});
+
+				labelSingerName.addMouseListener(new MouseListener() {
+
+					@Override
+					public void mouseDown(MouseEvent arg0) {
+						setMouseDownEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
+
+					}
+
+					@Override
+					public void mouseUp(MouseEvent arg0) {
+						setMouseUpEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
+					}
+
+					@Override
+					public void mouseDoubleClick(MouseEvent e) {
+						setMouseDoubleClickEvent(labelSongName, labelSingerName);
+
+					}
+				});
+
+				labelSingerName.addMouseTrackListener(new MMouseTrackListenerAdapter() {
+					@Override
+					public void mouseEnter(MouseEvent e) {
+						setMouseTrackEnterEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
+					}
+
+					@Override
+					public void mouseExit(MouseEvent e) {
+						setMouseTrackExitEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
+					}
+
+				});
+				labelAlbumName.addMouseListener(new MouseListener() {
+
+					@Override
+					public void mouseDown(MouseEvent arg0) {
+						setMouseDownEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
+
+					}
+
+					@Override
+					public void mouseUp(MouseEvent arg0) {
+						setMouseUpEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
+					}
+
+					@Override
+					public void mouseDoubleClick(MouseEvent e) {
+						setMouseDoubleClickEvent(labelSongName, labelSingerName);
+
+					}
+				});
+
+				labelAlbumName.addMouseTrackListener(new MMouseTrackListenerAdapter() {
+					@Override
+					public void mouseEnter(MouseEvent e) {
+						setMouseTrackEnterEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
+					}
+
+					@Override
+					public void mouseExit(MouseEvent e) {
+						setMouseTrackExitEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
+					}
+
+				});
+				labelDuration.addMouseListener(new MouseListener() {
+
+					@Override
+					public void mouseDown(MouseEvent arg0) {
+						setMouseDownEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
+
+					}
+
+					@Override
+					public void mouseUp(MouseEvent arg0) {
+						setMouseUpEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
+					}
+
+					@Override
+					public void mouseDoubleClick(MouseEvent e) {
+						setMouseDoubleClickEvent(labelSongName, labelSingerName);
+
+					}
+				});
+
+				labelDuration.addMouseTrackListener(new MMouseTrackListenerAdapter() {
+					@Override
+					public void mouseEnter(MouseEvent e) {
+						setMouseTrackEnterEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
+					}
+
+					@Override
+					public void mouseExit(MouseEvent e) {
+						setMouseTrackExitEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
 					}
 
 				});
@@ -149,6 +258,81 @@ public class SearchSongUi extends Composite {
 		parent.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		composite.layout();
 
+	}
+
+	protected void setMouseDoubleClickEvent(Label labelSongName, Label labelSingerName) {
+		if (MessageDialog.openConfirm(getShell(), "播放音乐", "是否播放:" + labelSongName.getText())) {
+			Map<String, String> map = null;
+			for (int i = 0, len = ConstantData.listSongInfo.size(); i < len; i++) {
+				map = ConstantData.listSongInfo.get(i);
+				if (map.get("songname").equals(labelSongName.getText())
+						&& map.get("singername").equals(labelSingerName.getText())) {
+					ConstantData.playIndex = i;
+					((Label) ConstantData.component.get("compositeBottom_labelPlayStop"))
+							.setImage(ImageUtil.scaleImage("src/images/stop.png", 30, 30));
+					((Label) ConstantData.component.get("compositeLeft_labelSongName")).setText(map.get("songname"));
+					((Label) ConstantData.component.get("compositeLeft_labelSinger")).setText(map.get("singername"));
+					if (ConstantData.playMusicThread != null && !ConstantData.playMusicThread.isInterrupted()) {
+						ConstantData.playMusicThread.stopPlay();
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+					new Thread(new Runnable() {
+						public void run() {
+							ConstantData.playing = true;
+							ConstantData.stopPonit = 0;
+							ConstantData.playMusicThread = new PlayMusicThread();
+							ConstantData.playMusicThread.start();
+
+						};
+					}).start();
+
+					return;
+				}
+			}
+		}
+
+	}
+
+	protected void setMouseDownEvent(Label labelSongName, Label labelSingerName, Label labelAlbumName,
+			Label labelDuration) {
+
+		labelSongName.setForeground(SWTResourceManager.getColor(SWT.COLOR_GRAY));
+		labelSingerName.setForeground(SWTResourceManager.getColor(SWT.COLOR_GRAY));
+		labelAlbumName.setForeground(SWTResourceManager.getColor(SWT.COLOR_GRAY));
+		labelDuration.setForeground(SWTResourceManager.getColor(SWT.COLOR_GRAY));
+
+	}
+
+	protected void setMouseTrackEnterEvent(Label labelSongName, Label labelSingerName, Label labelAlbumName,
+			Label labelDuration) {
+
+		labelSongName.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		labelSingerName.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		labelAlbumName.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		labelDuration.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+
+	}
+
+	protected void setMouseTrackExitEvent(Label labelSongName, Label labelSingerName, Label labelAlbumName,
+			Label labelDuration) {
+		labelSongName.setForeground(SWTResourceManager.getColor(SWT.TRANSPARENT));
+		labelSingerName.setForeground(SWTResourceManager.getColor(SWT.TRANSPARENT));
+		labelAlbumName.setForeground(SWTResourceManager.getColor(SWT.TRANSPARENT));
+		labelDuration.setForeground(SWTResourceManager.getColor(SWT.TRANSPARENT));
+	}
+
+	protected void setMouseUpEvent(Label labelSongName, Label labelSingerName, Label labelAlbumName,
+			Label labelDuration) {
+		System.out.println(labelSongName.getText());
+		labelSongName.setForeground(SWTResourceManager.getColor(SWT.TRANSPARENT));
+		labelSingerName.setForeground(SWTResourceManager.getColor(SWT.TRANSPARENT));
+		labelAlbumName.setForeground(SWTResourceManager.getColor(SWT.TRANSPARENT));
+		labelDuration.setForeground(SWTResourceManager.getColor(SWT.TRANSPARENT));
 	}
 
 	@Override
