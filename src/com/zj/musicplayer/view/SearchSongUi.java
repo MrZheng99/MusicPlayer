@@ -287,13 +287,20 @@ public class SearchSongUi extends Composite {
 					new Thread(new Runnable() {
 						public void run() {
 							ConstantData.playing = true;
+							ConstantData.playNew = true;
 							ConstantData.stopPonit = 0;
 							ConstantData.playMusicThread = new PlayMusicThread();
 							ConstantData.playMusicThread.start();
 
 						};
 					}).start();
-
+//					if (ConstantData.mplayMusicThread != null) {
+//						ConstantData.mplayMusicThread.stop();
+//					}
+//					ConstantData.playing = true;
+//					ConstantData.stopPonit = 0;
+//					ConstantData.mplayMusicThread = new MPlayMusicThread();
+//					ConstantData.mplayMusicThread.start();
 					return;
 				}
 			}

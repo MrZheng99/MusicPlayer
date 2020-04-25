@@ -2,6 +2,7 @@ package com.zj.musicplayer.view;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -606,12 +607,13 @@ public class MainUi {
 					System.out.println("点击暂停");
 
 					ConstantData.playMusicThread.stopPlay();
-
+//					ConstantData.clipMusic.stopPlay();
 					((Label) ConstantData.component.get("compositeBottom_labelPlayStop"))
 							.setImage(ImageUtil.scaleImage("src/images/start.png", 30, 30));
 				} else if (!ConstantData.playing) {
 					System.out.println("点击播放");
 					ConstantData.playMusicThread.startPlay();
+//					ConstantData.clipMusic.startPlay();
 
 					((Label) ConstantData.component.get("compositeBottom_labelPlayStop"))
 							.setImage(ImageUtil.scaleImage("src/images/stop.png", 30, 30));
@@ -623,6 +625,13 @@ public class MainUi {
 			public void mouseUp(MouseEvent e) {
 				if (ConstantData.listSongInfo != null && ConstantData.playMusicThread != null) {
 					ConstantData.playMusicThread.lastSong();
+					Map<String, String> map = ConstantData.listSongInfo.get(ConstantData.playIndex);
+					((Label) ConstantData.component.get("compositeLeft_labelSongName")).setText(map.get("songname"));
+					((Label) ConstantData.component.get("compositeLeft_labelSinger")).setText(map.get("singername"));
+					((Label) ConstantData.component.get("compositeLeft_labelSongPic"))
+							.setImage(ImageUtil.getImage(map.get("imageurl"), 38, 38));
+					((Label) ConstantData.component.get("compositeBottom_labelPlayStop"))
+							.setImage(ImageUtil.scaleImage("src/images/stop.png", 30, 30));
 				}
 			}
 		});
@@ -631,6 +640,13 @@ public class MainUi {
 			public void mouseUp(MouseEvent e) {
 				if (ConstantData.listSongInfo != null && ConstantData.playMusicThread != null) {
 					ConstantData.playMusicThread.nextSong();
+					Map<String, String> map = ConstantData.listSongInfo.get(ConstantData.playIndex);
+					((Label) ConstantData.component.get("compositeLeft_labelSongName")).setText(map.get("songname"));
+					((Label) ConstantData.component.get("compositeLeft_labelSinger")).setText(map.get("singername"));
+					((Label) ConstantData.component.get("compositeLeft_labelSongPic"))
+							.setImage(ImageUtil.getImage(map.get("imageurl"), 38, 38));
+					((Label) ConstantData.component.get("compositeBottom_labelPlayStop"))
+							.setImage(ImageUtil.scaleImage("src/images/stop.png", 30, 30));
 				}
 			}
 		});
