@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.eclipse.swt.widgets.Text;
 
-import com.zj.musicplayer.controller.Play;
 import com.zj.musicplayer.controller.PlayMusicThread;
 import com.zj.musicplayer.view.SearchSongUi;
 
@@ -27,8 +26,11 @@ public class ConstantData {
 	public static List<Map<String, String>> listSongInfo;// 存放当前播放列表
 	public static int playIndex = -1;
 	public static Player player = null;
-	public static Play playOneSong = null;
 	public static boolean playing = false;
 	public static AudioClip audioClip = null;
 	public static int stopPonit = 0;
+	public static int playPonit = 0;
+
+	public static int mp3Length = 0;
+	public static int mp3Time = 0;
 }

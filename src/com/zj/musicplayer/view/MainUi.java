@@ -18,6 +18,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
@@ -268,6 +269,7 @@ public class MainUi {
 	private Label labelLastSong;
 	private Label labelPlayStop;
 	private Label labelNextSong;
+	private ProgressBar progressBar;
 
 	private void initBottom() {
 		labelLastSong = new Label(compositeBottom, SWT.NONE);
@@ -275,8 +277,13 @@ public class MainUi {
 		labelPlayStop = new Label(compositeBottom, SWT.NONE);
 
 		labelNextSong = new Label(compositeBottom, SWT.NONE);
+		progressBar = new ProgressBar(compositeBottom, SWT.NONE);
+		progressBar.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
+
 		initCompositeBottomEvent();
 		ConstantData.component.put("compositeBottom_labelPlayStop", labelPlayStop);
+		ConstantData.component.put("compositeBottom_progressBar", progressBar);
+
 	}
 
 	private void refreshBottom() {
@@ -288,6 +295,8 @@ public class MainUi {
 		labelPlayStop.setImage(ImageUtil.scaleImage("src/images/start.png", 30, 30));
 		labelNextSong.setBounds(70, 12, 30, 30);
 		labelNextSong.setImage(ImageUtil.scaleImage("src/images/nextsong.png", 30, 30));
+		progressBar.setBounds(compositeLeft.getSize().x, 22, compositeRight.getSize().x, 10);
+
 		compositeBottom.layout();
 	}
 
@@ -371,14 +380,9 @@ public class MainUi {
 			@Override
 			public void mouseDown(MouseEvent e) {
 				if (ConstantData.playMusicThread != null && ConstantData.playMusicThread.isAlive()) {
-					ConstantData.playMusicThread.interrupt();
+					ConstantData.playMusicThread.stop();
 				}
-				if (ConstantData.playOneSong != null && ConstantData.playOneSong.isAlive()) {
-					if (ConstantData.player != null) {
-						ConstantData.player.close();
-					}
-					ConstantData.playOneSong.interrupt();
-				}
+
 				shell.dispose();
 
 			}
@@ -582,13 +586,14 @@ public class MainUi {
 			@Override
 			public void mouseEnter(MouseEvent e) {
 				labelSongPic.setImage(ImageUtil.scaleImage("src/images/right.png", 38, 38));
-				labelSongPic.setBackgroundImage(ImageUtil.scaleImage("src/images/java.jpg", 38, 38));
+				labelSongPic.setBackgroundImage(ImageUtil
+						.getImage(ConstantData.listSongInfo.get(ConstantData.playIndex).get("imageurl"), 38, 38));
 			}
 
 			@Override
 			public void mouseExit(MouseEvent e) {
-				labelSongPic.setImage(ImageUtil.scaleImage("src/images/java.jpg", 38, 38));
-
+				labelSongPic.setImage(ImageUtil
+						.getImage(ConstantData.listSongInfo.get(ConstantData.playIndex).get("imageurl"), 38, 38));
 			}
 		});
 	}
@@ -613,7 +618,22 @@ public class MainUi {
 				}
 			}
 		});
+		labelLastSong.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				if (ConstantData.listSongInfo != null && ConstantData.playMusicThread != null) {
+					ConstantData.playMusicThread.lastSong();
+				}
+			}
+		});
+		labelNextSong.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				if (ConstantData.listSongInfo != null && ConstantData.playMusicThread != null) {
+					ConstantData.playMusicThread.nextSong();
+				}
+			}
+		});
 
 	}
-
 }

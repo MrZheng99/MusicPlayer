@@ -272,6 +272,9 @@ public class SearchSongUi extends Composite {
 							.setImage(ImageUtil.scaleImage("src/images/stop.png", 30, 30));
 					((Label) ConstantData.component.get("compositeLeft_labelSongName")).setText(map.get("songname"));
 					((Label) ConstantData.component.get("compositeLeft_labelSinger")).setText(map.get("singername"));
+					System.out.println(map.get("imageurl"));
+					((Label) ConstantData.component.get("compositeLeft_labelSongPic"))
+							.setImage(ImageUtil.getImage(map.get("imageurl"), 38, 38));
 					if (ConstantData.playMusicThread != null && !ConstantData.playMusicThread.isInterrupted()) {
 						ConstantData.playMusicThread.stopPlay();
 						try {
