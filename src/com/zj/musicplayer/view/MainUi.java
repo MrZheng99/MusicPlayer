@@ -2,7 +2,6 @@ package com.zj.musicplayer.view;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -20,12 +19,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
+import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import com.zj.musicplayer.controller.PlayerMusic;
 import com.zj.musicplayer.utils.ConstantData;
 import com.zj.musicplayer.utils.ImageUtil;
 
@@ -82,6 +83,9 @@ public class MainUi {
 		initBottom();
 		initShellEvent();
 		setShellInitSize();
+		ConstantData.MM = new PlayerMusic(labelPlayStop, labelMusicAllTime, progressBar, labelMusicCurrentTime,
+				labelSongPic, labelSinger, labelSongName, scaleSetVolume);
+
 		saveConstantData();
 	}
 
@@ -147,6 +151,7 @@ public class MainUi {
 		labelSearch.setAlignment(SWT.CENTER);
 		labelSearch.setText("搜索");
 		labelUserName = new Label(compositeTop, SWT.NONE);
+
 		labelUserName.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 		labelHead = new Label(compositeTop, SWT.NONE);
 		labelSetting = new Label(compositeTop, SWT.NONE);
@@ -157,7 +162,13 @@ public class MainUi {
 		labelChangeTheme.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 		labelChangeTheme.setAlignment(SWT.CENTER);
 		labelChangeTheme.setText("换肤");
-		labelUserName.setText("未登录");
+//		ReadAndWriteRegistery registery = new ReadAndWriteRegistery();
+//		if (registery.findInfo("USERNAME") != null) {
+//			labelUserName.setText(registery.findInfo("USERNAME"));
+//		} else {
+//			labelUserName.setText(ConstantData.);
+//
+//		}
 		labelUserName.setAlignment(SWT.CENTER);
 
 		labelHead.setAlignment(SWT.CENTER);
@@ -239,6 +250,7 @@ public class MainUi {
 		compositeSong.setLayout(null);
 
 		labelSongPic = new Label(compositeSong, SWT.CENTER);
+
 		labelSinger = new Label(compositeSong, SWT.NONE);
 		labelSinger.setText("歌手");
 		labelSongName = new Label(compositeSong, SWT.NONE);
@@ -246,9 +258,6 @@ public class MainUi {
 		labelJoinLove = new Label(compositeSong, SWT.CENTER);
 		labelJoinLove.setText("喜欢");
 		initCompositeLeftEvent();
-		ConstantData.component.put("compositeLeft_labelSongName", labelSongName);
-		ConstantData.component.put("compositeLeft_labelSongPic", labelSongPic);
-		ConstantData.component.put("compositeLeft_labelSinger", labelSinger);
 
 	}
 
@@ -263,7 +272,7 @@ public class MainUi {
 		labelSongName.setBounds(38, 0, compositeLeftWidth - 38, 19);
 		labelSinger.setBounds(38, 19, compositeLeftWidth - 57, 19);
 		labelJoinLove.setBounds(compositeLeftWidth - 19, 19, 19, 19);
-		labelJoinLove.setImage(ImageUtil.scaleImage("src/images/love.png", 19, 19));
+		labelJoinLove.setImage(ImageUtil.scaleImage("src/images/love_normal.png", 19, 19));
 		compositeLeft.layout();
 	}
 
@@ -271,19 +280,35 @@ public class MainUi {
 	private Label labelPlayStop;
 	private Label labelNextSong;
 	private ProgressBar progressBar;
+	private Label labelMusicAllTime;
+	private Label labelMusicCurrentTime;
+	private Label labelMute;
+	private Label labelSplite;
+	private Label labelMusicList;
+	private Scale scaleSetVolume;
 
 	private void initBottom() {
-		labelLastSong = new Label(compositeBottom, SWT.NONE);
+		labelLastSong = new Label(compositeBottom, SWT.NONE | SWT.CENTER);
 
-		labelPlayStop = new Label(compositeBottom, SWT.NONE);
+		labelPlayStop = new Label(compositeBottom, SWT.NONE | SWT.CENTER);
 
-		labelNextSong = new Label(compositeBottom, SWT.NONE);
-		progressBar = new ProgressBar(compositeBottom, SWT.NONE);
+		labelNextSong = new Label(compositeBottom, SWT.NONE | SWT.CENTER);
+		progressBar = new ProgressBar(compositeBottom, SWT.NONE | SWT.CENTER);
+
 		progressBar.setForeground(SWTResourceManager.getColor(SWT.COLOR_DARK_GREEN));
 
+		labelMusicCurrentTime = new Label(compositeBottom, SWT.NONE | SWT.CENTER);
+		labelSplite = new Label(compositeBottom, SWT.NONE | SWT.CENTER);
+
+		labelMusicAllTime = new Label(compositeBottom, SWT.NONE | SWT.CENTER);
+		labelMute = new Label(compositeBottom, SWT.NONE | SWT.CENTER);
+		labelMusicList = new Label(compositeBottom, SWT.NONE | SWT.CENTER);
+		labelMusicCurrentTime.setText("00:00");
+		labelSplite.setText("/");
+		labelMusicAllTime.setText("00:00");
+		scaleSetVolume = new Scale(compositeBottom, SWT.NONE | SWT.CENTER);
+		scaleSetVolume.setSelection(100);
 		initCompositeBottomEvent();
-		ConstantData.component.put("compositeBottom_labelPlayStop", labelPlayStop);
-		ConstantData.component.put("compositeBottom_progressBar", progressBar);
 
 	}
 
@@ -291,19 +316,28 @@ public class MainUi {
 		// int compositeBottomWidth = compositeBottom.getSize().x;
 		// int compositeBottomHeight = compositeBottom.getSize().y;
 		labelLastSong.setBounds(0, 12, 30, 30);
-		labelLastSong.setImage(ImageUtil.scaleImage("src/images/lastsong.png", 30, 30));
+		labelLastSong.setImage(ImageUtil.scaleImage("src/images/lastsong_normal.png", 30, 30));
 		labelPlayStop.setBounds(35, 12, 30, 30);
-		labelPlayStop.setImage(ImageUtil.scaleImage("src/images/start.png", 30, 30));
+		labelPlayStop.setImage(ImageUtil.scaleImage("src/images/play_normal.png", 30, 30));
 		labelNextSong.setBounds(70, 12, 30, 30);
-		labelNextSong.setImage(ImageUtil.scaleImage("src/images/nextsong.png", 30, 30));
-		progressBar.setBounds(compositeLeft.getSize().x, 22, compositeRight.getSize().x, 10);
+		labelNextSong.setImage(ImageUtil.scaleImage("src/images/nextsong_normal.png", 30, 30));
+		progressBar.setBounds(compositeLeft.getSize().x, 22, compositeRight.getSize().x - 300, 10);
+		labelMusicCurrentTime.setBounds(compositeBottom.getSize().x - 300, 17, 45, 20);
+		labelSplite.setBounds(compositeBottom.getSize().x - 255, 17, 10, 20);
+		labelMusicAllTime.setBounds(compositeBottom.getSize().x - 245, 17, 45, 20);
+		scaleSetVolume.setBounds(compositeBottom.getSize().x - 195, 12, 100, 20);
 
+		labelMute.setBounds(compositeBottom.getSize().x - 90, 14, 25, 25);
+		labelMute.setImage(ImageUtil.scaleImage("src/images/voice_normal.png", 25, 25));
+		labelMusicList.setBounds(compositeBottom.getSize().x - 45, 14, 25, 25);
+		labelMusicList.setImage(ImageUtil.scaleImage("src/images/musiclist_normal.png", 25, 25));
 		compositeBottom.layout();
 	}
 
 	private boolean down = false;
 	private int clickX;
 	private int clickY;
+	protected boolean muteFlag = false;
 
 	private void initShellEvent() {
 		shell.addControlListener(new ControlAdapter() {
@@ -360,6 +394,7 @@ public class MainUi {
 				}
 				ConstantData.searchSongUi = new SearchSongUi(compositeRight, SWT.NONE);
 				stackLayout.topControl = ConstantData.searchSongUi;
+				compositeRight.layout();
 			}
 		});
 		textSearch.addKeyListener(new KeyAdapter() {
@@ -372,18 +407,24 @@ public class MainUi {
 					}
 					ConstantData.searchSongUi = new SearchSongUi(compositeRight, SWT.NONE);
 					stackLayout.topControl = ConstantData.searchSongUi;
+					compositeRight.layout();
 				}
 			}
 		});
+		// 点击用户名
+		labelUserName.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
 
+			}
+		});
 		labelClose.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseDown(MouseEvent e) {
-				if (ConstantData.playMusicThread != null && ConstantData.playMusicThread.isAlive()) {
-					ConstantData.playMusicThread.stop();
+				if (ConstantData.MM != null) {
+					ConstantData.MM.closePlay();
 				}
-
 				shell.dispose();
 
 			}
@@ -398,16 +439,7 @@ public class MainUi {
 				}
 			}
 		});
-		// labelMax.addMouseListener(new MouseAdapter() {
-		// @Override
-		// public void mouseDown(MouseEvent e) {
-		// if (shell.getLocation().x != 0 || shell.getLocation().y != 0) {
-		// shell.setBounds(0, 0, dimension.width, dimension.height);
-		//
-		// }
-		//
-		// }
-		// });
+
 		labelClose.addMouseTrackListener(new MouseTrackAdapter() {
 			// 不放在图标上的效果
 			@Override
@@ -578,6 +610,7 @@ public class MainUi {
 						ConstantData.searchSongUi = new SearchSongUi(compositeRight, SWT.NONE);
 					}
 					stackLayout.topControl = ConstantData.searchSongUi;
+					compositeRight.layout();
 					break;
 				}
 			}
@@ -587,66 +620,219 @@ public class MainUi {
 			@Override
 			public void mouseEnter(MouseEvent e) {
 				labelSongPic.setImage(ImageUtil.scaleImage("src/images/right.png", 38, 38));
-				labelSongPic.setBackgroundImage(ImageUtil
-						.getImage(ConstantData.listSongInfo.get(ConstantData.playIndex).get("imageurl"), 38, 38));
+				if (ConstantData.listSongInfo != null) {
+					labelSongPic.setBackgroundImage(ImageUtil
+							.getImage(ConstantData.listSongInfo.get(ConstantData.mplayIndex).get("imageurl"), 38, 38));
+				}
 			}
 
 			@Override
 			public void mouseExit(MouseEvent e) {
-				labelSongPic.setImage(ImageUtil
-						.getImage(ConstantData.listSongInfo.get(ConstantData.playIndex).get("imageurl"), 38, 38));
+				if (ConstantData.listSongInfo != null) {
+					labelSongPic.setImage(null);
+
+					labelSongPic.setBackgroundImage(ImageUtil
+							.getImage(ConstantData.listSongInfo.get(ConstantData.mplayIndex).get("imageurl"), 38, 38));
+				}
+			}
+		});
+
+		labelSongPic.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				if (ConstantData.songInfoUi != null) {
+					ConstantData.songInfoUi.dispose();
+				}
+				ConstantData.songInfoUi = new SongInfoUi(compositeRight, SWT.NONE);
+				stackLayout.topControl = ConstantData.songInfoUi;
+				compositeRight.layout();
 			}
 		});
 	}
 
 	private void initCompositeBottomEvent() {
+		labelLastSong.addMouseTrackListener(new MouseTrackAdapter() {
+
+			@Override
+			public void mouseExit(MouseEvent arg0) {
+				labelLastSong.setImage(ImageUtil.scaleImage("src/images/lastsong_normal.png", 30, 30));
+
+			}
+
+			@Override
+			public void mouseEnter(MouseEvent arg0) {
+				labelLastSong.setImage(ImageUtil.scaleImage("src/images/lastsong_highlight.png", 30, 30));
+
+			}
+
+			@Override
+			public void mouseHover(MouseEvent arg0) {
+				labelLastSong.setImage(ImageUtil.scaleImage("src/images/lastsong_highlight.png", 30, 30));
+
+			}
+		});
+		labelPlayStop.addMouseTrackListener(new MouseTrackAdapter() {
+
+			@Override
+			public void mouseExit(MouseEvent arg0) {
+				if (ConstantData.playing) {
+					labelPlayStop.setImage(ImageUtil.scaleImage("src/images/stop_normal.png", 30, 30));
+
+				} else {
+					labelPlayStop.setImage(ImageUtil.scaleImage("src/images/play_normal.png", 30, 30));
+
+				}
+
+			}
+
+			@Override
+			public void mouseHover(MouseEvent arg0) {
+				if (ConstantData.playing) {
+					labelPlayStop.setImage(ImageUtil.scaleImage("src/images/stop_highlight.png", 30, 30));
+				} else {
+					labelPlayStop.setImage(ImageUtil.scaleImage("src/images/play_highlight.png", 30, 30));
+
+				}
+
+			}
+
+			@Override
+			public void mouseEnter(MouseEvent arg0) {
+				if (ConstantData.playing) {
+					labelPlayStop.setImage(ImageUtil.scaleImage("src/images/stop_highlight.png", 30, 30));
+				} else {
+					labelPlayStop.setImage(ImageUtil.scaleImage("src/images/play_highlight.png", 30, 30));
+
+				}
+			}
+		});
+		labelNextSong.addMouseTrackListener(new MouseTrackAdapter() {
+
+			@Override
+			public void mouseExit(MouseEvent arg0) {
+				labelNextSong.setImage(ImageUtil.scaleImage("src/images/nextsong_normal.png", 30, 30));
+
+			}
+
+			@Override
+			public void mouseEnter(MouseEvent arg0) {
+				labelNextSong.setImage(ImageUtil.scaleImage("src/images/nextsong_highlight.png", 30, 30));
+
+			}
+
+			@Override
+			public void mouseHover(MouseEvent arg0) {
+				labelNextSong.setImage(ImageUtil.scaleImage("src/images/nextsong_highlight.png", 30, 30));
+
+			}
+		});
 		labelPlayStop.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
 				if (ConstantData.playing) {
 					System.out.println("点击暂停");
-
-					ConstantData.playMusicThread.stopPlay();
-//					ConstantData.clipMusic.stopPlay();
-					((Label) ConstantData.component.get("compositeBottom_labelPlayStop"))
-							.setImage(ImageUtil.scaleImage("src/images/start.png", 30, 30));
+					ConstantData.MM.pause();
+					labelPlayStop.setImage(ImageUtil.scaleImage("src/images/play_normal.png", 30, 30));
 				} else if (!ConstantData.playing) {
 					System.out.println("点击播放");
-					ConstantData.playMusicThread.startPlay();
-//					ConstantData.clipMusic.startPlay();
+					if (ConstantData.listSongInfo != null && !ConstantData.listSongInfo.isEmpty()) {
+						ConstantData.MM.continuePlay();
+						labelPlayStop.setImage(ImageUtil.scaleImage("src/images/stop_normal.png", 30, 30));
 
-					((Label) ConstantData.component.get("compositeBottom_labelPlayStop"))
-							.setImage(ImageUtil.scaleImage("src/images/stop.png", 30, 30));
+					}
 				}
 			}
 		});
 		labelLastSong.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
-				if (ConstantData.listSongInfo != null && ConstantData.playMusicThread != null) {
-					ConstantData.playMusicThread.lastSong();
-					Map<String, String> map = ConstantData.listSongInfo.get(ConstantData.playIndex);
-					((Label) ConstantData.component.get("compositeLeft_labelSongName")).setText(map.get("songname"));
-					((Label) ConstantData.component.get("compositeLeft_labelSinger")).setText(map.get("singername"));
-					((Label) ConstantData.component.get("compositeLeft_labelSongPic"))
-							.setImage(ImageUtil.getImage(map.get("imageurl"), 38, 38));
-					((Label) ConstantData.component.get("compositeBottom_labelPlayStop"))
-							.setImage(ImageUtil.scaleImage("src/images/stop.png", 30, 30));
+				if (ConstantData.listSongInfo != null) {
+					ConstantData.MM.lastSong();
+
 				}
 			}
 		});
 		labelNextSong.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
-				if (ConstantData.listSongInfo != null && ConstantData.playMusicThread != null) {
-					ConstantData.playMusicThread.nextSong();
-					Map<String, String> map = ConstantData.listSongInfo.get(ConstantData.playIndex);
-					((Label) ConstantData.component.get("compositeLeft_labelSongName")).setText(map.get("songname"));
-					((Label) ConstantData.component.get("compositeLeft_labelSinger")).setText(map.get("singername"));
-					((Label) ConstantData.component.get("compositeLeft_labelSongPic"))
-							.setImage(ImageUtil.getImage(map.get("imageurl"), 38, 38));
-					((Label) ConstantData.component.get("compositeBottom_labelPlayStop"))
-							.setImage(ImageUtil.scaleImage("src/images/stop.png", 30, 30));
+				if (ConstantData.listSongInfo != null) {
+					ConstantData.MM.nextSong();
+
+				}
+			}
+		});
+		scaleSetVolume.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				if (ConstantData.MM.thread != null && ConstantData.MM.thread.isAlive()) {
+					if (scaleSetVolume.getSelection() == 0) {
+						labelMute.setImage(ImageUtil.scaleImage("src/images/mute_normal.png", 25, 25));
+
+					} else {
+						labelMute.setImage(ImageUtil.scaleImage("src/images/voice_normal.png", 25, 25));
+
+					}
+					ConstantData.MM.setVolume(scaleSetVolume.getSelection());
+				}
+			}
+		});
+		labelMute.addMouseTrackListener(new MouseTrackAdapter() {
+
+			@Override
+			public void mouseExit(MouseEvent arg0) {
+				if (muteFlag) {
+					labelMute.setImage(ImageUtil.scaleImage("src/images/mute_normal.png", 25, 25));
+
+				} else {
+					labelMute.setImage(ImageUtil.scaleImage("src/images/voice_normal.png", 25, 25));
+
+				}
+
+			}
+
+			@Override
+			public void mouseEnter(MouseEvent arg0) {
+				if (muteFlag) {
+					labelMute.setImage(ImageUtil.scaleImage("src/images/mute_highlight.png", 25, 25));
+				} else {
+					labelMute.setImage(ImageUtil.scaleImage("src/images/voice_highlight.png", 25, 25));
+
+				}
+			}
+		});
+		labelMusicList.addMouseTrackListener(new MouseTrackAdapter() {
+
+			@Override
+			public void mouseExit(MouseEvent arg0) {
+				labelMusicList.setImage(ImageUtil.scaleImage("src/images/musiclist_normal.png", 25, 25));
+
+			}
+
+			@Override
+			public void mouseEnter(MouseEvent arg0) {
+				labelMusicList.setImage(ImageUtil.scaleImage("src/images/musiclist_highlight.png", 25, 25));
+
+			}
+		});
+		labelMute.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				if (muteFlag) {
+					muteFlag = false;
+					if (ConstantData.MM.thread != null && ConstantData.MM.thread.isAlive()) {
+						ConstantData.MM.openVoice();
+					}
+					labelMute.setImage(ImageUtil.scaleImage("src/images/voice_highlight.png", 25, 25));
+
+				} else {
+					muteFlag = true;
+
+					if (ConstantData.MM.thread != null && ConstantData.MM.thread.isAlive()) {
+						ConstantData.MM.openMute();
+
+					}
+					labelMute.setImage(ImageUtil.scaleImage("src/images/mute_highlight.png", 25, 25));
+
 				}
 			}
 		});

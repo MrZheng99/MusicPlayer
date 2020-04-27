@@ -7,19 +7,18 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
+import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import com.zj.musicplayer.controller.MMouseTrackListenerAdapter;
-import com.zj.musicplayer.controller.PlayMusicThread;
 import com.zj.musicplayer.model.SongInfoDao;
 import com.zj.musicplayer.utils.ConstantData;
 import com.zj.musicplayer.utils.DateUtil;
-import com.zj.musicplayer.utils.ImageUtil;
 
 /**
  * 
@@ -37,11 +36,11 @@ public class SearchSongUi extends Composite {
 	 */
 	public SearchSongUi(Composite parent, int style) {
 		super(parent, style);
-		parent.layout();
+
 		int width = parent.getSize().x / 4;
 		setLayout(new FillLayout(SWT.HORIZONTAL));
 
-		ScrolledComposite scrolledComposite = new ScrolledComposite(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		ScrolledComposite scrolledComposite = new ScrolledComposite(this, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		scrolledComposite.setBounds(0, 0, parent.getSize().x, parent.getSize().y);
 		scrolledComposite.setExpandVertical(true);
 		scrolledComposite.setExpandHorizontal(true);
@@ -140,7 +139,7 @@ public class SearchSongUi extends Composite {
 					}
 				});
 
-				labelSongName.addMouseTrackListener(new MMouseTrackListenerAdapter() {
+				labelSongName.addMouseTrackListener(new MouseTrackAdapter() {
 					@Override
 					public void mouseEnter(MouseEvent e) {
 						setMouseTrackEnterEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
@@ -173,7 +172,7 @@ public class SearchSongUi extends Composite {
 					}
 				});
 
-				labelSingerName.addMouseTrackListener(new MMouseTrackListenerAdapter() {
+				labelSingerName.addMouseTrackListener(new MouseTrackAdapter() {
 					@Override
 					public void mouseEnter(MouseEvent e) {
 						setMouseTrackEnterEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
@@ -205,7 +204,7 @@ public class SearchSongUi extends Composite {
 					}
 				});
 
-				labelAlbumName.addMouseTrackListener(new MMouseTrackListenerAdapter() {
+				labelAlbumName.addMouseTrackListener(new MouseTrackAdapter() {
 					@Override
 					public void mouseEnter(MouseEvent e) {
 						setMouseTrackEnterEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
@@ -237,7 +236,7 @@ public class SearchSongUi extends Composite {
 					}
 				});
 
-				labelDuration.addMouseTrackListener(new MMouseTrackListenerAdapter() {
+				labelDuration.addMouseTrackListener(new MouseTrackAdapter() {
 					@Override
 					public void mouseEnter(MouseEvent e) {
 						setMouseTrackEnterEvent(labelSongName, labelSingerName, labelAlbumName, labelDuration);
@@ -267,40 +266,18 @@ public class SearchSongUi extends Composite {
 				map = ConstantData.listSongInfo.get(i);
 				if (map.get("songname").equals(labelSongName.getText())
 						&& map.get("singername").equals(labelSingerName.getText())) {
-					ConstantData.playIndex = i;
-					((Label) ConstantData.component.get("compositeBottom_labelPlayStop"))
-							.setImage(ImageUtil.scaleImage("src/images/stop.png", 30, 30));
-					((Label) ConstantData.component.get("compositeLeft_labelSongName")).setText(map.get("songname"));
-					((Label) ConstantData.component.get("compositeLeft_labelSinger")).setText(map.get("singername"));
-					System.out.println(map.get("imageurl"));
-					((Label) ConstantData.component.get("compositeLeft_labelSongPic"))
-							.setImage(ImageUtil.getImage(map.get("imageurl"), 38, 38));
-					if (ConstantData.playMusicThread != null && !ConstantData.playMusicThread.isInterrupted()) {
-						ConstantData.playMusicThread.stopPlay();
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-					new Thread(new Runnable() {
+					ConstantData.mplayIndex = i;
+					final String lyricurl = map.get("lyricurl");
+					final String songurl = map.get("songurl");
+					final Map<String, String> mp = map;
+					Display.getDefault().asyncExec(new Runnable() {
+						@Override
 						public void run() {
-							ConstantData.playing = true;
-							ConstantData.playNew = true;
-							ConstantData.stopPonit = 0;
-							ConstantData.playMusicThread = new PlayMusicThread();
-							ConstantData.playMusicThread.start();
+							ConstantData.MM.refreshInfo(mp);
+							ConstantData.MM.start(lyricurl, songurl);
+						}
+					});
 
-						};
-					}).start();
-//					if (ConstantData.mplayMusicThread != null) {
-//						ConstantData.mplayMusicThread.stop();
-//					}
-//					ConstantData.playing = true;
-//					ConstantData.stopPonit = 0;
-//					ConstantData.mplayMusicThread = new MPlayMusicThread();
-//					ConstantData.mplayMusicThread.start();
 					return;
 				}
 			}
