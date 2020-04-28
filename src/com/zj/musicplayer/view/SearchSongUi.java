@@ -269,11 +269,9 @@ public class SearchSongUi extends Composite {
 					ConstantData.mplayIndex = i;
 					final String lyricurl = map.get("lyricurl");
 					final String songurl = map.get("songurl");
-					final Map<String, String> mp = map;
 					Display.getDefault().asyncExec(new Runnable() {
 						@Override
 						public void run() {
-							ConstantData.MM.refreshInfo(mp);
 							ConstantData.MM.start(lyricurl, songurl);
 						}
 					});

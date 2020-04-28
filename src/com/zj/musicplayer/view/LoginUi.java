@@ -14,10 +14,12 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.zj.musicplayer.model.UserInfoDao;
 import com.zj.musicplayer.utils.ConstantData;
 import com.zj.musicplayer.utils.ReadAndWriteRegistery;
+import com.zj.musicplayer.utils.StringUtil;
 
 public class LoginUi {
 
@@ -67,14 +69,22 @@ public class LoginUi {
 		Label labelAccount = new Label(shell, SWT.NONE);
 		labelAccount.setBounds(89, 61, 76, 20);
 		labelAccount.setText("账号");
-
-		textPassword = new Text(shell, SWT.BORDER | SWT.PASSWORD);
-
-		textPassword.setBounds(194, 125, 176, 26);
-
+		Text textAccount = new Text(shell, SWT.NONE);
+		textAccount.setBounds(194, 58, 176, 28);
 		Label labelPassword = new Label(shell, SWT.NONE);
 		labelPassword.setBounds(89, 128, 76, 20);
 		labelPassword.setText("密码");
+
+		textPassword = new Text(shell, SWT.BORDER | SWT.PASSWORD);
+		textPassword.setBounds(194, 125, 176, 26);
+		ReadAndWriteRegistery registery = new ReadAndWriteRegistery();
+		String username = registery.findInfo("USERNAME");
+		String password = registery.findInfo("PASSWORD");
+		System.out.println(username + ":" + password);
+		if (!StringUtil.checkNull(username)) {
+			textAccount.setText(username);
+			textPassword.setText(password);
+		}
 
 		Button btnCheckButton = new Button(shell, SWT.CHECK);
 
@@ -82,14 +92,13 @@ public class LoginUi {
 		btnCheckButton.setText("记住密码");
 
 		Label labelAccountTip = new Label(shell, SWT.NONE);
+		labelAccountTip.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		labelAccountTip.setBounds(89, 98, 101, 20);
 
 		Label labelPasswordTip = new Label(shell, SWT.NONE);
+		labelPasswordTip.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		labelPasswordTip.setBounds(89, 158, 101, 20);
 
-		Text textAccount = new Text(shell, SWT.NONE);
-
-		textAccount.setBounds(194, 58, 176, 28);
 		Button buttonLogin = new Button(shell, SWT.NONE);
 		buttonLogin.setBounds(89, 196, 101, 30);
 		buttonLogin.setText("登录");
@@ -113,16 +122,29 @@ public class LoginUi {
 
 				} else {
 					UserInfoDao userInfoDao = new UserInfoDao();
+
 					Map<String, String> map = userInfoDao.login(account, pwd);
 					if (map.size() > 0) {
+
 						ConstantData.currentLoginData = map;
 						if (btnCheckButton.getSelection()) {
 							ReadAndWriteRegistery registery = new ReadAndWriteRegistery();
-							registery.writeInfo(map.get("name"), map.get("password"));
+							if (!registery.findInfo("USERNAME").equals(account)) {
+								registery.writeInfo(account, pwd);
+
+							} else {
+								registery.delInfo("USERNAME");
+								registery.delInfo("PASSWORD");
+								registery.writeInfo(account, pwd);
+							}
 						}
 						MainUi win = new MainUi();
-						win.open();
 						shell.dispose();
+						win.open();
+					} else {
+						labelAccountTip.setText("请核对正确");
+
+						labelPasswordTip.setText("请核对正确");
 					}
 				}
 			}
@@ -130,8 +152,8 @@ public class LoginUi {
 		buttonRegist.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-//				UserInfoDao userInfoDao = new UserInfoDao();
-//				Map<String, String> map = userInfoDao.regist(account, pwd);
+				RegisteryUi win = new RegisteryUi();
+				win.open();
 			}
 		});
 		textAccount.addFocusListener(new FocusAdapter() {

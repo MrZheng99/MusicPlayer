@@ -152,6 +152,7 @@ public class DBHelper {
 			pstmt = con.prepareStatement(sql);
 			this.setPramas(pstmt, parmas);
 			rs = pstmt.executeUpdate();
+			con.commit();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -369,7 +370,6 @@ public class DBHelper {
 						continue;
 					}
 					colType = obj.getClass().getSimpleName();
-
 					if ("BLOB".equals(colType)) {
 						// 用blob获取 转成字节数据
 						blob = rs.getBlob(colName);
@@ -380,7 +380,6 @@ public class DBHelper {
 						map.put(colName, obj);
 
 					}
-					map.put(colName, rs.getObject(colName));
 				}
 			}
 		} catch (SQLException e) {

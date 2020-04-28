@@ -3,7 +3,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="libs/com.ibm.icu_54.1.1.v201501272100.jar"/>
-	<classpathentry kind="lib" path="libs/mysql-connector-java-5.1.39-bin.jar"/>
 	<classpathentry kind="lib" path="libs/ojdbc14.jar"/>
 	<classpathentry kind="lib" path="libs/org.eclipse.core.commands_3.7.0.v20150422-0725.jar"/>
 	<classpathentry kind="lib" path="libs/org.eclipse.core.runtime_3.11.1.v20150903-1804.jar"/>

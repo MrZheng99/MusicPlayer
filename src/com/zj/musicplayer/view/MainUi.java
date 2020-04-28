@@ -26,7 +26,9 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import com.zj.musicplayer.controller.JoinAndCancleLove;
 import com.zj.musicplayer.controller.PlayerMusic;
+import com.zj.musicplayer.model.UserInfoDao;
 import com.zj.musicplayer.utils.ConstantData;
 import com.zj.musicplayer.utils.ImageUtil;
 
@@ -84,7 +86,7 @@ public class MainUi {
 		initShellEvent();
 		setShellInitSize();
 		ConstantData.MM = new PlayerMusic(labelPlayStop, labelMusicAllTime, progressBar, labelMusicCurrentTime,
-				labelSongPic, labelSinger, labelSongName, scaleSetVolume);
+				labelSongPic, labelSinger, labelSongName, labelJoinLove, scaleSetVolume);
 
 		saveConstantData();
 	}
@@ -99,6 +101,7 @@ public class MainUi {
 		if (ConstantData.compositeTopTextSearch == null && textSearch != null) {
 			ConstantData.compositeTopTextSearch = textSearch;
 		}
+		ConstantData.component.put("compsiteLeft_loveLabel", labelJoinLove);
 	}
 
 	private StackLayout stackLayout = new StackLayout();
@@ -197,7 +200,12 @@ public class MainUi {
 
 		labelSearch.setBounds(compositeTopWidth * 4, compositeTopHeight / 4, 50, 25);
 		labelHead.setBounds(compositeTopWidth * 6, compositeTopHeight / 4, 25, 25);
+		String name = ConstantData.currentLoginData.get("username");
+		UserInfoDao userInfoDao = new UserInfoDao();
+
+		labelHead.setImage(ImageUtil.getImage(userInfoDao.queryHeadImage(name), 25, 25));
 		labelUserName.setBounds(compositeTopWidth * 6 + 27, compositeTopHeight / 4, compositeTopWidth - 30, 25);
+		labelUserName.setText(name);
 		labelSetting.setBounds(compositeTopWidth * 8, compositeTopHeight / 4, 50, 25);
 		labelChangeTheme.setBounds(compositeTopWidth * 8 - 75, compositeTopHeight / 4, 50, 25);
 
@@ -615,8 +623,20 @@ public class MainUi {
 				}
 			}
 		});
+		// 加入喜欢列表
+		labelJoinLove.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+				JoinAndCancleLove love = new JoinAndCancleLove();
+				love.exe();
+
+			}
+
+		});
 		/*****************/
 		labelSongPic.addMouseTrackListener(new MouseTrackAdapter() {
+
 			@Override
 			public void mouseEnter(MouseEvent e) {
 				labelSongPic.setImage(ImageUtil.scaleImage("src/images/right.png", 38, 38));
@@ -640,10 +660,14 @@ public class MainUi {
 		labelSongPic.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
+				if (ConstantData.mplayIndex == -1) {
+					return;
+				}
 				if (ConstantData.songInfoUi != null) {
 					ConstantData.songInfoUi.dispose();
 				}
 				ConstantData.songInfoUi = new SongInfoUi(compositeRight, SWT.NONE);
+
 				stackLayout.topControl = ConstantData.songInfoUi;
 				compositeRight.layout();
 			}

@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Scale;
 
+import com.zj.musicplayer.model.SongInfoDao;
 import com.zj.musicplayer.utils.ConstantData;
 import com.zj.musicplayer.utils.DateUtil;
 import com.zj.musicplayer.utils.ImageUtil;
@@ -48,9 +49,11 @@ public class PlayerMusic {
 	private Scale scaleVolume;
 	private FloatControl gainControl;
 	private float volume;
+	private Label labelJoinLove;
 
 	public PlayerMusic(Label labelPlayStop, Label labelMusicAllTime, ProgressBar progressBar,
-			Label labelMusicCurrentTime, Label labelSongPic, Label labelSinger, Label labelSongName, Scale volume) {
+			Label labelMusicCurrentTime, Label labelSongPic, Label labelSinger, Label labelSongName,
+			Label labelJoinLove, Scale volume) {
 		super();
 		this.labelPlayStop = labelPlayStop;
 		this.labelMusicAllTime = labelMusicAllTime;
@@ -59,6 +62,7 @@ public class PlayerMusic {
 		this.labelSongPic = labelSongPic;
 		this.labelSinger = labelSinger;
 		this.labelSongName = labelSongName;
+		this.labelJoinLove = labelJoinLove;
 		this.scaleVolume = volume;
 	}
 
@@ -66,6 +70,7 @@ public class PlayerMusic {
 	 * 读取音频
 	 */
 	public void readMusic(String songUrl) {
+
 		try {
 			MpegAudioFileReader mp = new MpegAudioFileReader();
 			AudioInputStream in = mp.getAudioInputStream(new URL(songUrl));
@@ -104,6 +109,14 @@ public class PlayerMusic {
 			playStartStatus = false;
 			thread.stop();
 		}
+		// 刷新歌曲详情版面
+		if (ConstantData.songInfoUi != null) {
+			ConstantData.songInfoUi.refresh();
+		}
+		// 刷新左边
+		final Map<String, String> map = ConstantData.listSongInfo.get(ConstantData.mplayIndex);
+
+		refreshLeftInfo(map);
 
 		progressBar.setSelection(0);
 
@@ -112,6 +125,7 @@ public class PlayerMusic {
 		gainControl = (FloatControl) ConstantData.clip.getControl(FloatControl.Type.MASTER_GAIN);
 
 		scaleVolume.setSelection((int) (1.1625 * gainControl.getValue() + 93));
+
 		// 同步歌词和进度条
 		thread = new Thread() {
 			@Override
@@ -170,7 +184,6 @@ public class PlayerMusic {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				refreshInfo(map);
 
 				ConstantData.MM.start(map.get("lyricurl"), map.get("songurl"));
 			}
@@ -189,14 +202,22 @@ public class PlayerMusic {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				refreshInfo(map);
+				refreshLeftInfo(map);
 				ConstantData.MM.start(map.get("lyricurl"), map.get("songurl"));
 			}
 		});
 
 	}
 
-	public void refreshInfo(Map<String, String> map) {
+	public void refreshLeftInfo(Map<String, String> map) {
+		SongInfoDao songInfoDao = new SongInfoDao();
+		Map<String, String> map2 = songInfoDao.findLove(map.get("songid"), ConstantData.currentLoginData.get("userid"));
+		if (map2.size() == 1) {
+			labelJoinLove.setImage(ImageUtil.scaleImage("src/images/love_full.png", 19, 19));
+		} else {
+			labelJoinLove.setImage(ImageUtil.scaleImage("src/images/love_normal.png", 19, 19));
+
+		}
 		String songName = map.get("songname").trim();
 
 		if (songName.length() > 5) {
@@ -273,7 +294,7 @@ public class PlayerMusic {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				refreshInfo(map);
+				refreshLeftInfo(map);
 				ConstantData.MM.start(map.get("lyricurl"), map.get("songurl"));
 			}
 		});
