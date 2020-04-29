@@ -79,8 +79,11 @@ public class SearchSongUi extends Composite {
 		GridData gd_lblNewLabel_4 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_lblNewLabel_4.widthHint = width - 50;
 		label4.setLayoutData(gd_lblNewLabel_4);
-		SongInfoDao songInfoDao = new SongInfoDao();
-		ConstantData.listSongInfo = songInfoDao.findAllByName(ConstantData.compositeTopTextSearch.getText().trim());
+		if (ConstantData.mplayIndex < 0) {
+			SongInfoDao songInfoDao = new SongInfoDao();
+			ConstantData.listSongInfo = songInfoDao.findAllByName(ConstantData.compositeTopTextSearch.getText().trim());
+
+		}
 		if (ConstantData.listSongInfo == null || ConstantData.listSongInfo.isEmpty()) {
 
 			Label labelTip = new Label(composite, SWT.NONE);

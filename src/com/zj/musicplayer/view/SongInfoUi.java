@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import com.zj.musicplayer.controller.DownLoadSong;
 import com.zj.musicplayer.controller.JoinAndCancleLove;
 import com.zj.musicplayer.model.SongInfoDao;
 import com.zj.musicplayer.utils.ConstantData;
@@ -38,7 +39,7 @@ public class SongInfoUi extends Composite {
 	private Label labelLove;
 	private Label labelDownload;
 	private Label labelPic;
-	private Label labelCompositeLeftLove;
+	private Label labelDownloadTip;
 
 	/**
 	 * Create the composite.
@@ -114,6 +115,17 @@ public class SongInfoUi extends Composite {
 			}
 
 		});
+		// 下载
+		labelDownload.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+				DownLoadSong downLoadSong = new DownLoadSong();
+				downLoadSong.download(labelDownloadTip);
+
+			}
+
+		});
 	}
 
 	private void initView() {
@@ -149,11 +161,12 @@ public class SongInfoUi extends Composite {
 		labelLove.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 		labelLove.setBounds(height / 8, 3 * height / 4 + 15, 30, 30);
 		labelDownload = new Label(composite, SWT.NONE);
-
+		labelDownloadTip = new Label(composite, SWT.NONE);
 		labelDownload.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 		labelDownload.setBounds(height / 4, 3 * height / 4 + 15, 30, 30);
 		labelDownload.setImage(ImageUtil.scaleImage("src/images/download_normal.png", 30, 30));
-
+		labelDownloadTip.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
+		labelDownloadTip.setBounds(height / 4, 3 * height / 4 + 45, 100, 30);
 		listLyric = new List(composite, SWT.MULTI);
 
 		listLyric.setForeground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));

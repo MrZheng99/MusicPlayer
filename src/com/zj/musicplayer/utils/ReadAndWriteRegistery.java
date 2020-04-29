@@ -6,12 +6,25 @@ import java.util.prefs.Preferences;
 public class ReadAndWriteRegistery {
 
 	// 把相应的值储存到变量中去
-	public void writeInfo(String userName, String password) {
+	public void writeLoginInfo(String userName, String password) {
 		// HKEY_LOCAL_MACHINE\Software\JavaSoft\prefs下写入注册表值.
 		Preferences pre = Preferences.userNodeForPackage(ReadAndWriteRegistery.class);
 
 		pre.put("USERNAME", userName);
 		pre.put("PASSWORD", password);
+
+		try {
+			pre.flush();
+		} catch (BackingStoreException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void writeInfo(String key, String value) {
+		// HKEY_LOCAL_MACHINE\Software\JavaSoft\prefs下写入注册表值.
+		Preferences pre = Preferences.userNodeForPackage(ReadAndWriteRegistery.class);
+
+		pre.put(key, value);
 
 		try {
 			pre.flush();

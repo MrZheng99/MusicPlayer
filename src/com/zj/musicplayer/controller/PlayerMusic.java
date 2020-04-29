@@ -25,7 +25,7 @@ import javazoom.spi.mpeg.sampled.file.MpegAudioFileReader;
 
 /**
  * 
- * @description：第二种写法
+ * @description：播放器
  * @author ZJ
  * @date 2020年4月26日 下午8:44:59
  */

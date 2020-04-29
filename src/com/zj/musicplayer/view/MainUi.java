@@ -2,6 +2,7 @@ package com.zj.musicplayer.view;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Random;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
@@ -117,8 +118,8 @@ public class MainUi {
 		compositeLeft.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLUE));
 		compositeLeft.setLayout(null);
 
-		compositeRight = new Composite(shell, SWT.NONE);
-		compositeRight.setBackground(SWTResourceManager.getColor(SWT.COLOR_CYAN));
+		compositeRight = new Composite(shell, SWT.BORDER);
+		compositeRight.setBackground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
 		compositeRight.setLayout(stackLayout);
 
 		compositeBottom = new Composite(shell, SWT.NONE);
@@ -137,6 +138,7 @@ public class MainUi {
 	private Label labelHead;
 	private Label labelSetting;
 	private Label labelChangeTheme;
+	private final int[] COLOR = new int[] { SWT.COLOR_RED, SWT.COLOR_GRAY, SWT.COLOR_DARK_GREEN, SWT.COLOR_CYAN };
 
 	private void initTop() {
 		labelPlayerTitle = new Label(compositeTop, SWT.NONE);
@@ -158,20 +160,16 @@ public class MainUi {
 		labelUserName.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 		labelHead = new Label(compositeTop, SWT.NONE);
 		labelSetting = new Label(compositeTop, SWT.NONE);
+
 		labelSetting.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 		labelSetting.setAlignment(SWT.CENTER);
 		labelSetting.setText("设置");
 		labelChangeTheme = new Label(compositeTop, SWT.NONE);
+
 		labelChangeTheme.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 		labelChangeTheme.setAlignment(SWT.CENTER);
 		labelChangeTheme.setText("换肤");
-//		ReadAndWriteRegistery registery = new ReadAndWriteRegistery();
-//		if (registery.findInfo("USERNAME") != null) {
-//			labelUserName.setText(registery.findInfo("USERNAME"));
-//		} else {
-//			labelUserName.setText(ConstantData.);
-//
-//		}
+
 		labelUserName.setAlignment(SWT.CENTER);
 
 		labelHead.setAlignment(SWT.CENTER);
@@ -311,6 +309,7 @@ public class MainUi {
 		labelMusicAllTime = new Label(compositeBottom, SWT.NONE | SWT.CENTER);
 		labelMute = new Label(compositeBottom, SWT.NONE | SWT.CENTER);
 		labelMusicList = new Label(compositeBottom, SWT.NONE | SWT.CENTER);
+
 		labelMusicCurrentTime.setText("00:00");
 		labelSplite.setText("/");
 		labelMusicAllTime.setText("00:00");
@@ -360,6 +359,9 @@ public class MainUi {
 						8 * shellHeight / 10);
 
 				compositeBottom.setBounds(0, 9 * shellHeight / 10, shellWidth, shellHeight / 10);
+				compositeRight.setBackgroundImage(ImageUtil.scaleImage("src/images/bk.png", compositeRight.getSize().x,
+						compositeRight.getSize().y));
+
 				refreshTop();
 				refreshLeft();
 				refreshBottom();
@@ -423,6 +425,24 @@ public class MainUi {
 		labelUserName.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
+
+			}
+		});
+		// 点击设置
+		labelSetting.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				SettingUi win = new SettingUi();
+				win.open();
+			}
+		});
+		// 点击换肤
+		labelChangeTheme.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				Random random = new Random();
+
+				compositeTop.setBackground(SWTResourceManager.getColor(COLOR[random.nextInt(4)]));
 
 			}
 		});
@@ -860,6 +880,17 @@ public class MainUi {
 				}
 			}
 		});
-
+		// 点击查看播放列表
+		labelMusicList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseUp(MouseEvent e) {
+				if (ConstantData.searchSongUi != null) {
+					ConstantData.searchSongUi.dispose();
+				}
+				ConstantData.searchSongUi = new SearchSongUi(compositeRight, SWT.NONE);
+				stackLayout.topControl = ConstantData.searchSongUi;
+				compositeRight.layout();
+			}
+		});
 	}
 }
