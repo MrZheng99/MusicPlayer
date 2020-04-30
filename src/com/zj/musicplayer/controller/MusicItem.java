@@ -15,8 +15,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import com.zj.musicplayer.model.SongInfoDao;
 import com.zj.musicplayer.utils.ConstantData;
+import com.zj.musicplayer.view.DownloadSongUi;
+import com.zj.musicplayer.view.FindMusicUi;
+import com.zj.musicplayer.view.LoveUi;
+import com.zj.musicplayer.view.SearchSongUi;
 
 /**
  * 
@@ -31,9 +34,15 @@ public class MusicItem {
 	private Label labelAlbumName;
 	private Label labelDuration;
 	private MenuItem menuItemDownload;
+	private String uiName;
+	public static final String UI_SEARCH = "SEARCH_SONG_UI";
+	public static final String UI_LOVE = "LOVE_SONG_UI";
+	public static final String UI_FIND = "FIND_SONG_UI";
+	public static final String UI_DOWNLOAD = "DOWNLOAD_SONG_UI";
 
-	public MusicItem(Label labelSongName, Label labelSingerName, Label labelAlbumName, Label labelDuration,
-			MenuItem menuItemDownload) {
+	public MusicItem(String uiName, Label labelSongName, Label labelSingerName, Label labelAlbumName,
+			Label labelDuration, MenuItem menuItemDownload) {
+		this.uiName = uiName;
 		this.labelSongName = labelSongName;
 		this.labelSingerName = labelSingerName;
 		this.labelAlbumName = labelAlbumName;
@@ -44,6 +53,19 @@ public class MusicItem {
 		bindEvent(labelAlbumName);
 		bindEvent(labelDuration);
 		initMenuItemEvent();
+	}
+
+	public MusicItem(String uiName, Label labelSongName, Label labelSingerName, Label labelAlbumName,
+			Label labelDuration) {
+		this.uiName = uiName;
+		this.labelSongName = labelSongName;
+		this.labelSingerName = labelSingerName;
+		this.labelAlbumName = labelAlbumName;
+		this.labelDuration = labelDuration;
+		bindEvent(labelSongName);
+		bindEvent(labelSingerName);
+		bindEvent(labelAlbumName);
+		bindEvent(labelDuration);
 	}
 
 	// 事件绑定
@@ -121,11 +143,24 @@ public class MusicItem {
 
 	protected void setMouseDoubleClickEvent() {
 		if (MessageDialog.openConfirm(labelAlbumName.getShell(), "播放音乐", "是否播放:" + labelSongName.getText())) {
-			SongInfoDao songInfoDao = new SongInfoDao();
-			String userId = ConstantData.currentLoginData.get("userid");
-
-			ConstantData.listSongInfo = songInfoDao.findLoves(userId);
-
+			switch (uiName) {
+			case UI_LOVE:
+				ConstantData.listSongInfo = LoveUi.listLoveSong;
+				break;
+			case UI_SEARCH:
+				ConstantData.listSongInfo = SearchSongUi.listSearchSong;
+				break;
+			case UI_DOWNLOAD:
+				ConstantData.listSongInfo = DownloadSongUi.listDownloadSong;
+				break;
+			case UI_FIND:
+				ConstantData.listSongInfo = FindMusicUi.listRandomSong;
+				break;
+			default:
+				ConstantData.listSongInfo = null;
+				return;
+			}
+			System.out.println(ConstantData.listSongInfo);
 			Map<String, String> map = null;
 			for (int i = 0, len = ConstantData.listSongInfo.size(); i < len; i++) {
 				map = ConstantData.listSongInfo.get(i);

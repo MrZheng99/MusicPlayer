@@ -1,5 +1,6 @@
 package com.zj.musicplayer.view;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -16,19 +17,12 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.zj.musicplayer.controller.MusicItem;
 import com.zj.musicplayer.model.SongInfoDao;
-import com.zj.musicplayer.utils.ConstantData;
 import com.zj.musicplayer.utils.DateUtil;
 
-/**
- * 
- * @description：展示搜索到的歌曲
- * @author ZJ
- * @date 2020年4月22日 下午3:31:07
- */
-public class SearchSongUi extends Composite {
+public class FindMusicUi extends Composite {
 
-	public static List<Map<String, String>> listSearchSong = null;
-	private List<MusicItem> listMusicItems;
+	private List<MusicItem> listMusicItems = new ArrayList<MusicItem>();
+	public static List<Map<String, String>> listRandomSong;
 
 	/**
 	 * Create the composite.
@@ -36,9 +30,8 @@ public class SearchSongUi extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public SearchSongUi(Composite parent, int style) {
+	public FindMusicUi(Composite parent, int style) {
 		super(parent, style);
-
 		int width = parent.getSize().x / 4;
 		setLayout(new FillLayout(SWT.HORIZONTAL));
 
@@ -49,7 +42,6 @@ public class SearchSongUi extends Composite {
 
 		Composite composite = new Composite(scrolledComposite, SWT.NONE);
 		composite.setLayout(new GridLayout(4, false));
-
 		Label label1 = new Label(composite, SWT.NONE);
 		label1.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		label1.setAlignment(SWT.CENTER);
@@ -79,62 +71,51 @@ public class SearchSongUi extends Composite {
 		label4.setAlignment(SWT.CENTER);
 		label4.setText("时长");
 		GridData gd_lblNewLabel_4 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-		gd_lblNewLabel_4.widthHint = width - 50;
+		gd_lblNewLabel_4.widthHint = width - 55;
 		label4.setLayoutData(gd_lblNewLabel_4);
 
 		SongInfoDao songInfoDao = new SongInfoDao();
-		listSearchSong = songInfoDao.findAllByName(ConstantData.compositeTopTextSearch.getText().trim());
 
-		if (listSearchSong == null || listSearchSong.isEmpty()) {
+		listRandomSong = songInfoDao.findByRandom(20);
+		for (Map<String, String> map : listRandomSong) {
 
-			Label labelTip = new Label(composite, SWT.NONE);
-			labelTip.setAlignment(SWT.CENTER);
-			labelTip.setText("暂无歌曲信息,请重新搜索");
-			labelTip.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-			ConstantData.compositeTopTextSearch.setFocus();
-		} else {
-			for (Map<String, String> map : listSearchSong) {
+			Label labelSongName = new Label(composite, SWT.NONE);
+			labelSongName.setAlignment(SWT.CENTER);
+			labelSongName.setText(map.get("songname"));
+			GridData gd_SongName = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+			gd_SongName.widthHint = width;
+			labelSongName.setLayoutData(gd_SongName);
 
-				Label labelSongName = new Label(composite, SWT.NONE);
-				labelSongName.setAlignment(SWT.CENTER);
-				labelSongName.setText(map.get("songname"));
-				GridData gd_SongName = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-				gd_SongName.widthHint = width;
-				labelSongName.setLayoutData(gd_SongName);
+			Label labelSingerName = new Label(composite, SWT.NONE);
+			labelSingerName.setAlignment(SWT.CENTER);
+			labelSingerName.setText(map.get("singername"));
+			GridData gd_labelSingerName = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+			gd_labelSingerName.widthHint = width;
+			labelSingerName.setLayoutData(gd_labelSingerName);
 
-				Label labelSingerName = new Label(composite, SWT.NONE);
-				labelSingerName.setAlignment(SWT.CENTER);
-				labelSingerName.setText(map.get("singername"));
-				GridData gd_labelSingerName = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-				gd_labelSingerName.widthHint = width;
-				labelSingerName.setLayoutData(gd_labelSingerName);
+			Label labelAlbumName = new Label(composite, SWT.NONE);
+			labelAlbumName.setAlignment(SWT.CENTER);
+			labelAlbumName.setText(map.get("albumname"));
+			GridData gd_labelAlbumName = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+			gd_labelAlbumName.widthHint = width;
+			labelAlbumName.setLayoutData(gd_labelAlbumName);
 
-				Label labelAlbumName = new Label(composite, SWT.NONE);
-				labelAlbumName.setAlignment(SWT.CENTER);
-				labelAlbumName.setText(map.get("albumname"));
-				GridData gd_labelAlbumName = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-				gd_labelAlbumName.widthHint = width;
-				labelAlbumName.setLayoutData(gd_labelAlbumName);
+			Label labelDuration = new Label(composite, SWT.NONE);
+			labelDuration.setAlignment(SWT.CENTER);
+			labelDuration.setText(DateUtil.millisecondToMinuteSecond(map.get("duration")));
+			GridData gd_labelDuration = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+			gd_labelDuration.widthHint = width - 55;
+			labelDuration.setLayoutData(gd_labelDuration);
+			Menu menu = new Menu(composite);
+			labelSongName.setMenu(menu);
+			labelSingerName.setMenu(menu);
+			labelAlbumName.setMenu(menu);
+			labelDuration.setMenu(menu);
 
-				Label labelDuration = new Label(composite, SWT.NONE);
-				labelDuration.setAlignment(SWT.CENTER);
-				labelDuration.setText(DateUtil.millisecondToMinuteSecond(map.get("duration")));
-				GridData gd_labelDuration = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
-				gd_labelDuration.widthHint = width - 50;
-				labelDuration.setLayoutData(gd_labelDuration);
-				Menu menu = new Menu(label1);
-				labelSongName.setMenu(menu);
-				labelSingerName.setMenu(menu);
-				labelAlbumName.setMenu(menu);
-				labelDuration.setMenu(menu);
-
-				MenuItem menuItem = new MenuItem(menu, SWT.NONE);
-				menuItem.setText("下载");
-				listMusicItems.add(new MusicItem(MusicItem.UI_SEARCH, labelSongName, labelSingerName, labelAlbumName,
-						labelDuration, menuItem));
-
-			}
-
+			MenuItem menuItemDownload = new MenuItem(menu, SWT.NONE);
+			menuItemDownload.setText("下载");
+			listMusicItems.add(new MusicItem(MusicItem.UI_FIND, labelSongName, labelSingerName, labelAlbumName,
+					labelDuration, menuItemDownload));
 		}
 		scrolledComposite.setContent(composite);
 		scrolledComposite.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));

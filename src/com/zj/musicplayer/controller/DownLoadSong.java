@@ -10,12 +10,15 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.zj.musicplayer.model.SongInfoDao;
 import com.zj.musicplayer.utils.ConstantData;
 import com.zj.musicplayer.utils.ReadAndWriteRegistery;
 import com.zj.musicplayer.utils.StringUtil;
+import com.zj.musicplayer.view.DownloadSongUi;
 
 /**
  * 
@@ -84,7 +87,9 @@ public class DownLoadSong {
 			e.printStackTrace();
 		}
 		labelTip.setText("下载成功！");
-
+		if (ConstantData.downloadMusicUi != null) {
+			ConstantData.downloadMusicUi.layout();
+		}
 	}
 
 	public void download(String songName) {
@@ -134,6 +139,11 @@ public class DownLoadSong {
 			e.printStackTrace();
 		}
 
+		if (ConstantData.downloadMusicUi != null) {
+			ConstantData.downloadMusicUi.dispose();
+			ConstantData.downloadMusicUi = new DownloadSongUi((Composite) ConstantData.component.get("compositeRight"),
+					SWT.NONE);
+		}
 	}
 
 }

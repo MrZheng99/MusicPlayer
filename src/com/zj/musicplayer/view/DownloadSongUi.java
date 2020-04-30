@@ -11,19 +11,15 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.zj.musicplayer.controller.MusicItem;
-import com.zj.musicplayer.model.SongInfoDao;
-import com.zj.musicplayer.utils.ConstantData;
 import com.zj.musicplayer.utils.DateUtil;
+import com.zj.musicplayer.utils.MusicFileUtil;
 
-public class LoveUi extends Composite {
-
+public class DownloadSongUi extends Composite {
 	private List<MusicItem> listMusicItems = new ArrayList<MusicItem>();
-	public static List<Map<String, String>> listLoveSong = null;
+	public static List<Map<String, String>> listDownloadSong = null;
 
 	/**
 	 * Create the composite.
@@ -31,7 +27,7 @@ public class LoveUi extends Composite {
 	 * @param parent
 	 * @param style
 	 */
-	public LoveUi(Composite parent, int style) {
+	public DownloadSongUi(Composite parent, int style) {
 		super(parent, style);
 		int width = parent.getSize().x / 4;
 		setLayout(new FillLayout(SWT.HORIZONTAL));
@@ -75,11 +71,9 @@ public class LoveUi extends Composite {
 		gd_lblNewLabel_4.widthHint = width - 50;
 		label4.setLayoutData(gd_lblNewLabel_4);
 
-		SongInfoDao songInfoDao = new SongInfoDao();
-
-		String userId = ConstantData.currentLoginData.get("userid");
-		listLoveSong = songInfoDao.findAllLove(userId);
-		for (Map<String, String> map : listLoveSong) {
+		MusicFileUtil fileUtil = new MusicFileUtil();
+		listDownloadSong = fileUtil.scanFolder();
+		for (Map<String, String> map : listDownloadSong) {
 
 			Label labelSongName = new Label(composite, SWT.NONE);
 			labelSongName.setAlignment(SWT.CENTER);
@@ -108,16 +102,9 @@ public class LoveUi extends Composite {
 			GridData gd_labelDuration = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 			gd_labelDuration.widthHint = width - 50;
 			labelDuration.setLayoutData(gd_labelDuration);
-			Menu menu = new Menu(composite);
-			labelSongName.setMenu(menu);
-			labelSingerName.setMenu(menu);
-			labelAlbumName.setMenu(menu);
-			labelDuration.setMenu(menu);
 
-			MenuItem menuItemDownload = new MenuItem(menu, SWT.NONE);
-			menuItemDownload.setText("下载");
-			listMusicItems.add(new MusicItem(MusicItem.UI_LOVE, labelSongName, labelSingerName, labelAlbumName,
-					labelDuration, menuItemDownload));
+			listMusicItems.add(new MusicItem(MusicItem.UI_DOWNLOAD, labelSongName, labelSingerName, labelAlbumName,
+					labelDuration));
 		}
 		scrolledComposite.setContent(composite);
 		scrolledComposite.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
@@ -128,5 +115,7 @@ public class LoveUi extends Composite {
 
 	@Override
 	protected void checkSubclass() {
+		// Disable the check that prevents subclassing of SWT components
 	}
+
 }

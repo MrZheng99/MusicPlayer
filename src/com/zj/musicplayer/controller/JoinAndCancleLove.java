@@ -1,10 +1,13 @@
 package com.zj.musicplayer.controller;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.zj.musicplayer.model.SongInfoDao;
 import com.zj.musicplayer.utils.ConstantData;
 import com.zj.musicplayer.utils.ImageUtil;
+import com.zj.musicplayer.view.LoveUi;
 
 public class JoinAndCancleLove {
 
@@ -38,6 +41,10 @@ public class JoinAndCancleLove {
 				}
 			}
 
+		}
+		if (ConstantData.loveUi != null) {
+			ConstantData.loveUi.dispose();
+			ConstantData.loveUi = new LoveUi((Composite) ConstantData.component.get("compositeRight"), SWT.NONE);
 		}
 	}
 }

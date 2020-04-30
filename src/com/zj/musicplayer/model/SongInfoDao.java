@@ -6,8 +6,6 @@ import java.util.Map;
 public class SongInfoDao {
 	public List<Map<String, String>> findAllByName(String name) {
 		DBHelper db = new DBHelper();
-//		String sql = "select songName,songId,duration,albumName,singerName from SONGS where songName like '%'||?||'%'";
-
 		String sql = "select *from SONGS where songName like '%'||?||'%'";
 		List<Map<String, String>> listSong = db.querysString(sql, name);
 		// 优先歌曲名称
@@ -15,7 +13,6 @@ public class SongInfoDao {
 			return listSong;
 		} else {
 			sql = "select *from SONGS where singerName like '%'||?||'%'";
-//			sql = "select songName,songId,duration,albumName,singerName from SONGS where singerName like '%'||?||'%'";
 			return db.querysString(sql, name);
 		}
 	}
@@ -38,14 +35,13 @@ public class SongInfoDao {
 		return db.queryString(sql, songId, userid, "我的喜欢", 1);
 	}
 
-	public List<Map<String, String>> findLoves(String userId) {
+	public List<Map<String, String>> findAllLove(String userId) {
 		DBHelper db = new DBHelper();
 		String sql = "select s.* from SONGS s,SONGSHEET t where t.userId=? and t.ssname=? and t.state=? and s.songId=t.songId";
 		return db.querysString(sql, userId, "我的喜欢", 1);
 	}
 
 	public int cancelLove(String songId, String userId) {
-		System.out.println("取消喜欢");
 
 		DBHelper db = new DBHelper();
 		return db.update("update SONGSHEET set state=? where ssname=? and songId=? and userId=?", 0, "我的喜欢", songId,
@@ -54,7 +50,6 @@ public class SongInfoDao {
 	}
 
 	public int joinLove(String songId, String userId) {
-		System.out.println("加入喜欢");
 		DBHelper db = new DBHelper();
 		String sql = "select ssid from SONGSHEET where songId=? and userId=? and ssname=?";
 		Map<String, String> rs = db.queryString(sql, songId, userId, "我的喜欢");
@@ -66,6 +61,17 @@ public class SongInfoDao {
 				"insert into SONGSHEET(ssid,ssname,songId,userId,state) values(seq_songsheet_id.nextval,?,?,?,?)",
 				"我的喜欢", songId, userId, 1);
 
+	}
+
+	/**
+	 * 
+	 * @param number 需要记录条数 小于150
+	 * @return
+	 */
+	public List<Map<String, String>> findByRandom(int number) {
+		DBHelper db = new DBHelper();
+		String sql = "select *from SONGS sample(70) where rownum<=?";
+		return db.querysString(sql, number);
 	}
 
 }

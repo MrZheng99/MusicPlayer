@@ -9,6 +9,8 @@ import javax.sound.sampled.Clip;
 import org.eclipse.swt.widgets.Text;
 
 import com.zj.musicplayer.controller.PlayerMusic;
+import com.zj.musicplayer.view.DownloadSongUi;
+import com.zj.musicplayer.view.FindMusicUi;
 import com.zj.musicplayer.view.LoveUi;
 import com.zj.musicplayer.view.SearchSongUi;
 import com.zj.musicplayer.view.SongInfoUi;
@@ -32,5 +34,7 @@ public class ConstantData {
 	public static PlayerMusic MM = null;
 	public static int mplayIndex = -1;
 	public static boolean muteFlag = false;
+	public static FindMusicUi findMusicUi = null;
+	public static DownloadSongUi downloadMusicUi = null;
 
 }

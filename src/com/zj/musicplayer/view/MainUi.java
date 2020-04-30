@@ -103,6 +103,7 @@ public class MainUi {
 			ConstantData.compositeTopTextSearch = textSearch;
 		}
 		ConstantData.component.put("compsiteLeft_loveLabel", labelJoinLove);
+		ConstantData.component.put("compositeRight", compositeRight);
 	}
 
 	private StackLayout stackLayout = new StackLayout();
@@ -638,6 +639,22 @@ public class MainUi {
 						ConstantData.loveUi = new LoveUi(compositeRight, SWT.NONE);
 					}
 					stackLayout.topControl = ConstantData.loveUi;
+					compositeRight.layout();
+					break;
+
+				case "发现音乐":
+					if (ConstantData.findMusicUi == null) {
+						ConstantData.findMusicUi = new FindMusicUi(compositeRight, SWT.NONE);
+					}
+					stackLayout.topControl = ConstantData.findMusicUi;
+					compositeRight.layout();
+					break;
+
+				case "我的下载":
+					if (ConstantData.downloadMusicUi == null) {
+						ConstantData.downloadMusicUi = new DownloadSongUi(compositeRight, SWT.NONE);
+					}
+					stackLayout.topControl = ConstantData.downloadMusicUi;
 					compositeRight.layout();
 					break;
 				}
