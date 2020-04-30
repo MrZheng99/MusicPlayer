@@ -9,10 +9,12 @@ import javax.sound.sampled.Clip;
 import org.eclipse.swt.widgets.Text;
 
 import com.zj.musicplayer.controller.PlayerMusic;
+import com.zj.musicplayer.view.LoveUi;
 import com.zj.musicplayer.view.SearchSongUi;
 import com.zj.musicplayer.view.SongInfoUi;
 
 public class ConstantData {
+	public static LoveUi loveUi = null;
 	// public static Map<String, String> currentLoginData = null;// 登录用户信息
 	public static Text compositeTopTextSearch = null;
 	public static SearchSongUi searchSongUi = null;

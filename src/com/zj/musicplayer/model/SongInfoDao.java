@@ -26,10 +26,22 @@ public class SongInfoDao {
 		return db.queryString(sql, songId);
 	}
 
+	public Map<String, String> findByName(String songName) {
+		DBHelper db = new DBHelper();
+		String sql = "select *from SONGS where songName=?";
+		return db.queryString(sql, songName);
+	}
+
 	public Map<String, String> findLove(String songId, String userid) {
 		DBHelper db = new DBHelper();
 		String sql = "select ssid from SONGSHEET where songId=? and userId=? and ssname=? and state=?";
 		return db.queryString(sql, songId, userid, "我的喜欢", 1);
+	}
+
+	public List<Map<String, String>> findLoves(String userId) {
+		DBHelper db = new DBHelper();
+		String sql = "select s.* from SONGS s,SONGSHEET t where t.userId=? and t.ssname=? and t.state=? and s.songId=t.songId";
+		return db.querysString(sql, userId, "我的喜欢", 1);
 	}
 
 	public int cancelLove(String songId, String userId) {

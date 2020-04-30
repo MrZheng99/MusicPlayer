@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.eclipse.swt.widgets.Label;
 
+import com.zj.musicplayer.model.SongInfoDao;
 import com.zj.musicplayer.utils.ConstantData;
 import com.zj.musicplayer.utils.ReadAndWriteRegistery;
 import com.zj.musicplayer.utils.StringUtil;
@@ -85,4 +86,54 @@ public class DownLoadSong {
 		labelTip.setText("下载成功！");
 
 	}
+
+	public void download(String songName) {
+
+		ReadAndWriteRegistery registery = new ReadAndWriteRegistery();
+
+		String directoryOld = registery.findInfo("DOWNLOAD_PATH");
+		String directory = null;
+		if (StringUtil.checkNull(directoryOld)) {
+			directory = System.getProperty("user.dir");
+		} else {
+			directory = directoryOld;
+		}
+		SongInfoDao songInfoDao = new SongInfoDao();
+		Map<String, String> songInfo = songInfoDao.findByName(songName);
+		String songUrl = songInfo.get("songurl");
+		try {
+			// 获取URL对象
+			URL url = new URL(songUrl);
+			// 根据URL打开链接
+			URLConnection connection = url.openConnection();
+			// 从连接处获取输入流对象
+			InputStream inputStream = connection.getInputStream();
+			@SuppressWarnings("static-access")
+			String path = new String().format("%s\\%s.mp3", directory, songName);
+			File file = new File(path);
+			if (file.exists()) {
+				return;
+			}
+
+			System.out.println(path);
+
+			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+			byte[] bt = new byte[1024];
+			int len = 0;
+			while ((len = inputStream.read(bt)) != -1) {
+				out.write(bt, 0, len);
+			}
+			out.close();
+			inputStream.close();
+
+		} catch (MalformedURLException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+	}
+
 }

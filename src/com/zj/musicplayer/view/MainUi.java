@@ -633,11 +633,11 @@ public class MainUi {
 				TreeItem ti = (TreeItem) e.item; // 获取选择节点
 				String itName = ti.getText().trim();
 				switch (itName) {
-				case "":
-					if (ConstantData.searchSongUi == null) {
-						ConstantData.searchSongUi = new SearchSongUi(compositeRight, SWT.NONE);
+				case "我的喜欢":
+					if (ConstantData.loveUi == null) {
+						ConstantData.loveUi = new LoveUi(compositeRight, SWT.NONE);
 					}
-					stackLayout.topControl = ConstantData.searchSongUi;
+					stackLayout.topControl = ConstantData.loveUi;
 					compositeRight.layout();
 					break;
 				}
