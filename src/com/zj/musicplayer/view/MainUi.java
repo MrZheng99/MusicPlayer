@@ -46,20 +46,6 @@ public class MainUi {
 	private Composite compositeBottom; // 底部
 
 	/**
-	 * Launch the application.
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			MainUi window = new MainUi();
-			window.open();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Open the window.
 	 */
 	public void open() {
@@ -426,7 +412,8 @@ public class MainUi {
 		labelUserName.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
-
+				ChangeUserInfoUi ui = new ChangeUserInfoUi(shell);
+				ui.open();
 			}
 		});
 		// 点击设置

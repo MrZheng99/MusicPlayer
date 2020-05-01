@@ -27,20 +27,6 @@ public class LoginUi {
 	private Text textPassword;
 
 	/**
-	 * Launch the application.
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			LoginUi window = new LoginUi();
-			window.open();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Open the window.
 	 */
 	public void open() {

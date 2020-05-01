@@ -22,20 +22,6 @@ public class SettingUi {
 	protected Shell shell;
 
 	/**
-	 * Launch the application.
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		try {
-			SettingUi window = new SettingUi();
-			window.open();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Open the window.
 	 */
 	public void open() {
