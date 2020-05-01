@@ -64,6 +64,8 @@ public class RegisteryUi {
 		shell = new Shell(SWT.MIN);
 		shell.setSize(540, 450);
 		shell.setText("注册");
+		shell.setImage(ImageUtil.scaleImage("src/images/title.png", 50, 50));
+
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		shell.setLocation((dimension.width - shell.getSize().x) / 2, (dimension.height - shell.getSize().y) / 2);
 

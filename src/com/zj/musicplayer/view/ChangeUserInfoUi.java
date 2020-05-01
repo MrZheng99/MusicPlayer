@@ -84,6 +84,7 @@ public class ChangeUserInfoUi {
 		shell.setSize(525, 400);
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		shell.setLocation((dimension.width - shell.getSize().x) / 2, (dimension.height - shell.getSize().y) / 2);
+		shell.setImage(ImageUtil.scaleImage("src/images/title.png", 50, 50));
 
 		Label label = new Label(shell, SWT.NONE);
 		label.setBounds(112, 10, 76, 20);

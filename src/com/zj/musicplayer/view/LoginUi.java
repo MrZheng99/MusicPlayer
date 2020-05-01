@@ -18,6 +18,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.zj.musicplayer.model.UserInfoDao;
 import com.zj.musicplayer.utils.ConstantData;
+import com.zj.musicplayer.utils.ImageUtil;
 import com.zj.musicplayer.utils.ReadAndWriteRegistery;
 import com.zj.musicplayer.utils.StringUtil;
 
@@ -47,20 +48,24 @@ public class LoginUi {
 	protected void createContents() {
 		shell = new Shell(SWT.MIN);
 
-		shell.setSize(535, 303);
+		shell.setSize(535, 300);
 		shell.setText("登录");
+		shell.setImage(ImageUtil.scaleImage("src/images/title.png", 50, 50));
+		shell.setBackgroundImage((ImageUtil.scaleImage("src/images/bk_login.jpg", 535, 300)));
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		shell.setLocation((dimension.width - shell.getSize().x) / 2, (dimension.height - shell.getSize().y) / 2);
 
 		Label labelAccount = new Label(shell, SWT.NONE);
 		labelAccount.setBounds(89, 61, 76, 20);
 		labelAccount.setText("账号");
+		labelAccount.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
+
 		Text textAccount = new Text(shell, SWT.NONE);
 		textAccount.setBounds(194, 58, 176, 28);
 		Label labelPassword = new Label(shell, SWT.NONE);
 		labelPassword.setBounds(89, 128, 76, 20);
 		labelPassword.setText("密码");
-
+		labelPassword.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 		textPassword = new Text(shell, SWT.BORDER | SWT.PASSWORD);
 		textPassword.setBounds(194, 125, 176, 26);
 		ReadAndWriteRegistery registery = new ReadAndWriteRegistery();
@@ -76,14 +81,17 @@ public class LoginUi {
 
 		btnCheckButton.setBounds(404, 128, 84, 20);
 		btnCheckButton.setText("记住密码");
+		btnCheckButton.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		Label labelAccountTip = new Label(shell, SWT.NONE);
 		labelAccountTip.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		labelAccountTip.setBounds(89, 98, 101, 20);
+		labelAccountTip.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		Label labelPasswordTip = new Label(shell, SWT.NONE);
 		labelPasswordTip.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		labelPasswordTip.setBounds(89, 158, 101, 20);
+		labelPasswordTip.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		Button buttonLogin = new Button(shell, SWT.NONE);
 		buttonLogin.setBounds(89, 196, 101, 30);
@@ -115,14 +123,12 @@ public class LoginUi {
 						ConstantData.currentLoginData = map;
 						if (btnCheckButton.getSelection()) {
 							ReadAndWriteRegistery registery = new ReadAndWriteRegistery();
-							if (!registery.findInfo("USERNAME").equals(account)) {
-								registery.writeInfo(account, pwd);
+							System.out.println(registery.findInfo("USERNAME"));
 
-							} else {
-								registery.delInfo("USERNAME");
-								registery.delInfo("PASSWORD");
-								registery.writeInfo(account, pwd);
-							}
+							registery.delInfo("USERNAME");
+							registery.delInfo("PASSWORD");
+							registery.writeLoginInfo(account, pwd);
+
 						}
 						MainUi win = new MainUi();
 						shell.dispose();
@@ -136,6 +142,7 @@ public class LoginUi {
 			}
 		});
 		buttonRegist.addSelectionListener(new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				RegisteryUi win = new RegisteryUi();

@@ -96,6 +96,7 @@ public class MainUi {
 
 	private void createCompsite() {
 		shell.setLayout(null);
+		shell.setImage(ImageUtil.scaleImage("src/images/title.png", 50, 50));
 
 		compositeTop = new Composite(shell, SWT.NONE);
 		compositeTop.setBackground(SWTResourceManager.getColor(SWT.COLOR_RED));

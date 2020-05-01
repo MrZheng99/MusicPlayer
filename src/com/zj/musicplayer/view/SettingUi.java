@@ -14,6 +14,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 
+import com.zj.musicplayer.utils.ImageUtil;
 import com.zj.musicplayer.utils.ReadAndWriteRegistery;
 import com.zj.musicplayer.utils.StringUtil;
 
@@ -45,6 +46,7 @@ public class SettingUi {
 		shell.setSize(525, 400);
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		shell.setLocation((dimension.width - shell.getSize().x) / 2, (dimension.height - shell.getSize().y) / 2);
+		shell.setImage(ImageUtil.scaleImage("src/images/title.png", 50, 50));
 
 		shell.setText("ZJ-MusicPlayer  Setting");
 		Label label = new Label(shell, SWT.NONE);
