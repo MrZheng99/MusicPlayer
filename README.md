@@ -1,7 +1,7 @@
 # 仿某音乐播放器
 ## 效果图
-	![Image text](src/images/rs_paly.png)
-	![Image text](src/images/rs_list.png)
+	![播放效果](https://github.com/MrZheng99/MusicPlayer/blob/master/src/images/rs_play.png)
+	![歌曲列表](https://github.com/MrZheng99/MusicPlayer/blob/master/src/images/rs_list.png)
 	
 ## 实现功能
   > 在线
