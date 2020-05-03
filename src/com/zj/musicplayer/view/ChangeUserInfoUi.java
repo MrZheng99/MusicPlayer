@@ -82,6 +82,8 @@ public class ChangeUserInfoUi {
 		shell = new Shell();
 		shell.setText("个人信息");
 		shell.setSize(525, 400);
+		shell.setBackgroundImage((ImageUtil.scaleImage("src/images/bk_login.jpg", 525, 400)));
+
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		shell.setLocation((dimension.width - shell.getSize().x) / 2, (dimension.height - shell.getSize().y) / 2);
 		shell.setImage(ImageUtil.scaleImage("src/images/title.png", 50, 50));
@@ -89,14 +91,17 @@ public class ChangeUserInfoUi {
 		Label label = new Label(shell, SWT.NONE);
 		label.setBounds(112, 10, 76, 20);
 		label.setText("用户名");
+		label.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		Label label_1 = new Label(shell, SWT.NONE);
 		label_1.setBounds(112, 158, 76, 20);
 		label_1.setText("邮箱");
+		label_1.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		Label label_2 = new Label(shell, SWT.NONE);
 		label_2.setBounds(112, 213, 76, 20);
 		label_2.setText("旧密码");
+		label_2.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		textOldPassword = new Text(shell, SWT.BORDER | SWT.PASSWORD);
 		textOldPassword.setBounds(228, 210, 164, 26);
@@ -109,10 +114,12 @@ public class ChangeUserInfoUi {
 
 		labelName = new Label(shell, SWT.NONE);
 		labelName.setBounds(252, 10, 76, 20);
+		labelName.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		Label label_3 = new Label(shell, SWT.NONE);
 		label_3.setBounds(112, 72, 76, 20);
 		label_3.setText("头像");
+		label_3.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		labelPic = new Label(shell, SWT.NONE);
 		labelPic.setBounds(252, 53, 108, 68);
@@ -120,6 +127,7 @@ public class ChangeUserInfoUi {
 		Label label_4 = new Label(shell, SWT.NONE);
 		label_4.setBounds(112, 275, 76, 20);
 		label_4.setText("新密码");
+		label_4.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		buttonModify = new Button(shell, SWT.NONE);
 
@@ -133,14 +141,18 @@ public class ChangeUserInfoUi {
 		labelEmailTip = new Label(shell, SWT.NONE);
 		labelEmailTip.setBounds(410, 158, 90, 20);
 		labelEmailTip.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		labelEmailTip.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		labelOldPwdTip = new Label(shell, SWT.NONE);
 		labelOldPwdTip.setBounds(410, 213, 90, 20);
 		labelOldPwdTip.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		labelOldPwdTip.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		labelNewPwdTip = new Label(shell, SWT.NONE);
 		labelNewPwdTip.setBounds(410, 269, 90, 20);
 		labelNewPwdTip.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
+		labelNewPwdTip.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
+
 		initInfo();
 		initEvent();
 	}

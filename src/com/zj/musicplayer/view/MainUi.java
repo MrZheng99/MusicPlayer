@@ -28,11 +28,19 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 import com.zj.musicplayer.controller.JoinAndCancleLove;
+import com.zj.musicplayer.controller.MusicItem;
 import com.zj.musicplayer.controller.PlayerMusic;
 import com.zj.musicplayer.model.UserInfoDao;
 import com.zj.musicplayer.utils.ConstantData;
 import com.zj.musicplayer.utils.ImageUtil;
 
+/**
+ * 
+ * @description：主窗口
+ * 
+ * @author ZJ
+ * @date 2020年5月3日 下午2:34:33
+ */
 public class MainUi {
 
 	protected Shell shell;
@@ -831,7 +839,6 @@ public class MainUi {
 			public void mouseExit(MouseEvent arg0) {
 				if (muteFlag) {
 					labelMute.setImage(ImageUtil.scaleImage("src/images/mute_normal.png", 25, 25));
-
 				} else {
 					labelMute.setImage(ImageUtil.scaleImage("src/images/voice_normal.png", 25, 25));
 
@@ -889,11 +896,27 @@ public class MainUi {
 		labelMusicList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseUp(MouseEvent e) {
-				if (ConstantData.searchSongUi != null) {
-					ConstantData.searchSongUi.dispose();
+				if (ConstantData.uiFlag == null)
+					return;
+				switch (ConstantData.uiFlag) {
+				case MusicItem.UI_LOVE:
+					stackLayout.topControl = ConstantData.loveUi;
+
+					break;
+				case MusicItem.UI_SEARCH:
+					stackLayout.topControl = ConstantData.searchSongUi;
+
+					break;
+				case MusicItem.UI_DOWNLOAD:
+					stackLayout.topControl = ConstantData.downloadMusicUi;
+
+					break;
+				case MusicItem.UI_FIND:
+					stackLayout.topControl = ConstantData.findMusicUi;
+
+					break;
 				}
-				ConstantData.searchSongUi = new SearchSongUi(compositeRight, SWT.NONE);
-				stackLayout.topControl = ConstantData.searchSongUi;
+
 				compositeRight.layout();
 			}
 		});

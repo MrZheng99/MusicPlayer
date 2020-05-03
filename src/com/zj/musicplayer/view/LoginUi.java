@@ -22,6 +22,12 @@ import com.zj.musicplayer.utils.ImageUtil;
 import com.zj.musicplayer.utils.ReadAndWriteRegistery;
 import com.zj.musicplayer.utils.StringUtil;
 
+/**
+ * 
+ * @description：登录窗口
+ * @author ZJ
+ * @date 2020年5月3日 下午2:35:04
+ */
 public class LoginUi {
 
 	protected Shell shell;
@@ -82,7 +88,7 @@ public class LoginUi {
 		btnCheckButton.setBounds(404, 128, 84, 20);
 		btnCheckButton.setText("记住密码");
 		btnCheckButton.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
-
+		btnCheckButton.setSelection(true);
 		Label labelAccountTip = new Label(shell, SWT.NONE);
 		labelAccountTip.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		labelAccountTip.setBounds(89, 98, 101, 20);
@@ -124,10 +130,14 @@ public class LoginUi {
 						if (btnCheckButton.getSelection()) {
 							ReadAndWriteRegistery registery = new ReadAndWriteRegistery();
 							System.out.println(registery.findInfo("USERNAME"));
-
 							registery.delInfo("USERNAME");
 							registery.delInfo("PASSWORD");
 							registery.writeLoginInfo(account, pwd);
+
+						} else {
+							ReadAndWriteRegistery registery = new ReadAndWriteRegistery();
+							registery.delInfo("USERNAME");
+							registery.delInfo("PASSWORD");
 
 						}
 						MainUi win = new MainUi();

@@ -146,21 +146,29 @@ public class MusicItem {
 			switch (uiName) {
 			case UI_LOVE:
 				ConstantData.listSongInfo = LoveUi.listLoveSong;
+				ConstantData.uiFlag = UI_LOVE;
 				break;
 			case UI_SEARCH:
 				ConstantData.listSongInfo = SearchSongUi.listSearchSong;
+				ConstantData.uiFlag = UI_SEARCH;
+
 				break;
 			case UI_DOWNLOAD:
 				ConstantData.listSongInfo = DownloadSongUi.listDownloadSong;
+				ConstantData.uiFlag = UI_DOWNLOAD;
+
 				break;
 			case UI_FIND:
 				ConstantData.listSongInfo = FindMusicUi.listRandomSong;
+				ConstantData.uiFlag = UI_FIND;
+
 				break;
 			default:
 				ConstantData.listSongInfo = null;
+				ConstantData.uiFlag = null;
+
 				return;
 			}
-			System.out.println(ConstantData.listSongInfo);
 			Map<String, String> map = null;
 			for (int i = 0, len = ConstantData.listSongInfo.size(); i < len; i++) {
 				map = ConstantData.listSongInfo.get(i);

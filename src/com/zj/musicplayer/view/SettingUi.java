@@ -18,6 +18,12 @@ import com.zj.musicplayer.utils.ImageUtil;
 import com.zj.musicplayer.utils.ReadAndWriteRegistery;
 import com.zj.musicplayer.utils.StringUtil;
 
+/**
+ * 
+ * @description：设置界面
+ * @author ZJ
+ * @date 2020年5月3日 下午2:33:56
+ */
 public class SettingUi {
 
 	protected Shell shell;
@@ -44,19 +50,26 @@ public class SettingUi {
 		shell = new Shell(SWT.TITLE);
 
 		shell.setSize(525, 400);
+		shell.setImage(ImageUtil.scaleImage("src/images/title.png", 50, 50));
+
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		shell.setLocation((dimension.width - shell.getSize().x) / 2, (dimension.height - shell.getSize().y) / 2);
 		shell.setImage(ImageUtil.scaleImage("src/images/title.png", 50, 50));
+		shell.setBackgroundImage((ImageUtil.scaleImage("src/images/bk_login.jpg", 525, 400)));
 
-		shell.setText("ZJ-MusicPlayer  Setting");
+		shell.setText("ZJ-MusicPlayer");
 		Label label = new Label(shell, SWT.NONE);
 		label.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 9, SWT.BOLD));
 		label.setBounds(24, 10, 76, 20);
 		label.setText("设置");
+		label.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
+
 		Label lblNewLabel = new Label(shell, SWT.NONE);
 		lblNewLabel.setFont(SWTResourceManager.getFont("Microsoft YaHei UI", 9, SWT.NORMAL));
 		lblNewLabel.setBounds(25, 50, 100, 20);
 		lblNewLabel.setText("歌曲下载路径");
+		lblNewLabel.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
+
 		Button btnNewButton = new Button(shell, SWT.NONE);
 
 		btnNewButton.setBounds(131, 45, 98, 30);
@@ -64,12 +77,18 @@ public class SettingUi {
 
 		Label labelPath = new Label(shell, SWT.NONE);
 		labelPath.setBounds(259, 50, 238, 20);
+		labelPath.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
+
 		ReadAndWriteRegistery registery = new ReadAndWriteRegistery();
 
 		Button buttonSave = new Button(shell, SWT.NONE);
 
-		buttonSave.setBounds(220, 290, 98, 30);
+		buttonSave.setBounds(shell.getSize().x / 4, 290, shell.getSize().x / 5, 30);
 		buttonSave.setText("保存退出");
+		Button buttonExit = new Button(shell, SWT.NONE);
+
+		buttonExit.setBounds(shell.getSize().x / 2, 290, shell.getSize().x / 5, 30);
+		buttonExit.setText("退出");
 		String pathOld = registery.findInfo("DOWNLOAD_PATH");
 		if (StringUtil.checkNull(pathOld)) {
 			labelPath.setText(System.getProperty("user.dir"));
@@ -105,6 +124,14 @@ public class SettingUi {
 					registery.writeInfo("DOWNLOAD_PATH", labelPath.getText().trim());
 					shell.dispose();
 				}
+			}
+		});
+		buttonExit.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				shell.dispose();
+
 			}
 		});
 	}

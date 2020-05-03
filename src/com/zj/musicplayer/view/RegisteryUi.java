@@ -26,6 +26,12 @@ import com.zj.musicplayer.model.UserInfoDao;
 import com.zj.musicplayer.utils.ImageUtil;
 import com.zj.musicplayer.utils.StringUtil;
 
+/**
+ * 
+ * @description：注册窗口
+ * @author ZJ
+ * @date 2020年5月3日 下午2:34:21
+ */
 public class RegisteryUi {
 
 	protected Shell shell;
@@ -65,6 +71,7 @@ public class RegisteryUi {
 		shell.setSize(540, 450);
 		shell.setText("注册");
 		shell.setImage(ImageUtil.scaleImage("src/images/title.png", 50, 50));
+		shell.setBackgroundImage((ImageUtil.scaleImage("src/images/bk_login.jpg", 540, 450)));
 
 		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		shell.setLocation((dimension.width - shell.getSize().x) / 2, (dimension.height - shell.getSize().y) / 2);
@@ -77,16 +84,19 @@ public class RegisteryUi {
 		labelName.setAlignment(SWT.RIGHT);
 		labelName.setBounds(85, 22, 76, 20);
 		labelName.setText("用户名");
+		labelName.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		Label labelPassword = new Label(shell, SWT.NONE);
 		labelPassword.setAlignment(SWT.RIGHT);
 		labelPassword.setBounds(85, 68, 76, 20);
 		labelPassword.setText("密码");
+		labelPassword.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		Label label = new Label(shell, SWT.NONE);
 		label.setAlignment(SWT.RIGHT);
 		label.setBounds(85, 108, 76, 20);
 		label.setText("确认密码");
+		label.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		textPassword = new Text(shell, SWT.BORDER | SWT.PASSWORD);
 		textPassword.setBounds(220, 65, 140, 26);
@@ -98,6 +108,7 @@ public class RegisteryUi {
 		labelEmail.setAlignment(SWT.RIGHT);
 		labelEmail.setBounds(85, 149, 76, 20);
 		labelEmail.setText("Email");
+		labelEmail.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		textEmail = new Text(shell, SWT.BORDER);
 		textEmail.setBounds(220, 146, 140, 26);
@@ -106,31 +117,41 @@ public class RegisteryUi {
 		labelHeadImage.setAlignment(SWT.RIGHT);
 		labelHeadImage.setBounds(85, 237, 76, 20);
 		labelHeadImage.setText("设置头像");
+		labelHeadImage.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		Label labelImage = new Label(shell, SWT.NONE);
-		labelImage.setImage(ImageUtil.scaleImage(path, 95, 95));
-		labelImage.setBounds(245, 196, 95, 95);
-
+		labelImage.setImage(ImageUtil.scaleImage(path, 140, 140));
+		labelImage.setBounds(220, 196, 140, 140);
+		labelImage.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 		Button buttonRegiste = new Button(shell, SWT.NONE);
 
-		buttonRegiste.setBounds(220, 352, 100, 30);
+		buttonRegiste.setBounds(shell.getSize().x / 4, 350, shell.getSize().x / 5, 30);
 		buttonRegiste.setText("注册");
+		Button buttonExit = new Button(shell, SWT.NONE);
+
+		buttonExit.setText("返回登录");
+		buttonExit.setBounds(shell.getSize().x / 2, 350, shell.getSize().x / 5, 30);
 
 		Label labelTipName = new Label(shell, SWT.NONE);
 		labelTipName.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		labelTipName.setBounds(396, 19, 128, 20);
+		labelTipName.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		Label labelTipPwd = new Label(shell, SWT.NONE);
 		labelTipPwd.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		labelTipPwd.setBounds(396, 65, 128, 20);
+		labelTipPwd.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		Label labelTipPwdAgain = new Label(shell, SWT.NONE);
 		labelTipPwdAgain.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		labelTipPwdAgain.setBounds(396, 108, 128, 20);
+		labelTipPwdAgain.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
 
 		Label labelTipEmail = new Label(shell, SWT.NONE);
 		labelTipEmail.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
 		labelTipEmail.setBounds(396, 149, 128, 20);
+		labelTipEmail.setBackground(SWTResourceManager.getColor(SWT.COLOR_TRANSPARENT));
+
 		labelImage.addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -226,6 +247,13 @@ public class RegisteryUi {
 				}
 			}
 		});
+		buttonExit.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
 
+				shell.dispose();
+
+			}
+		});
 	}
 }

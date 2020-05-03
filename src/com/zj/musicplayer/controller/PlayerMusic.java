@@ -48,7 +48,7 @@ public class PlayerMusic {
 	private Label labelSongName;
 	private Scale scaleVolume;
 	private FloatControl gainControl;
-	private float volume;
+
 	private Label labelJoinLove;
 
 	public PlayerMusic(Label labelPlayStop, Label labelMusicAllTime, ProgressBar progressBar,
@@ -123,8 +123,8 @@ public class PlayerMusic {
 		readMusic(songUrl);
 		ConstantData.clip.start();
 		gainControl = (FloatControl) ConstantData.clip.getControl(FloatControl.Type.MASTER_GAIN);
-
-		scaleVolume.setSelection((int) (1.1625 * gainControl.getValue() + 93));
+		gainControl.setValue(ConstantData.volume);
+		scaleVolume.setSelection((int) (1.1625 * ConstantData.volume + 93));
 
 		// 同步歌词和进度条
 		thread = new Thread() {
@@ -301,16 +301,18 @@ public class PlayerMusic {
 	}
 
 	public void openMute() {
-		volume = gainControl.getValue();
+		ConstantData.volume = gainControl.getValue();
 		gainControl.setValue(gainControl.getMinimum());
 	}
 
 	public void openVoice() {
 
-		gainControl.setValue(volume);
+		gainControl.setValue(ConstantData.volume);
 	}
 
 	public void setVolume(int selection) {
-		gainControl.setValue((float) 0.860206 * selection - 80);
+		ConstantData.volume = (float) 0.860206 * selection - 80;
+
+		gainControl.setValue(ConstantData.volume);
 	}
 }

@@ -1,16 +1,18 @@
 # 仿某音乐播放器
+## 效果图
+	![Image text](src/images/rs_paly.png)
+	![Image text](src/images/rs_list.png)
+	
 ## 实现功能
   > 在线
-  >> 退出登录 <br>
-     个人信息 <br>
-     我的音乐 <br>
-     我的歌单 <br>
-     我的收藏 <br>
+  >> 我的下载 <br>
+     我的喜欢 <br>
      发现音乐 <br>
-     
-  > 离线
-  >> 登录 <br>
-     发现音乐 <br> 
+     搜索歌曲<br>
+     换肤 <br>
+     设置<br>
+     查看修改个人信息<br>
+ 
       
 ## 包说明
    * `com.zj.musicplayer.model` 提供数据模型，以及数据库访问

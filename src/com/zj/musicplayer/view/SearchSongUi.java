@@ -1,5 +1,6 @@
 package com.zj.musicplayer.view;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ import com.zj.musicplayer.utils.DateUtil;
 public class SearchSongUi extends Composite {
 
 	public static List<Map<String, String>> listSearchSong = null;
-	private List<MusicItem> listMusicItems;
+	private List<MusicItem> listMusicItems = new ArrayList<MusicItem>();
 
 	/**
 	 * Create the composite.

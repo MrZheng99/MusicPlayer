@@ -22,19 +22,18 @@ public class ConstantData {
 	public static SearchSongUi searchSongUi = null;
 	public static SongInfoUi songInfoUi = null;
 	public static Map<String, Object> component = new HashMap<String, Object>();// 存放当前播放列表
-
-	public static List<Map<String, String>> listSongInfo;// 存放当前播放列表
-	public static int playIndex = -1; // 播放到哪首歌
-	public static boolean playing = false; // 是不是正在播放
-
 	public static Map<String, String> currentLoginData;
 
 	/************************/
+	public static List<Map<String, String>> listSongInfo;// 存放当前播放列表
+	public static boolean playing = false; // 是不是正在播放
 	public static Clip clip = null;
 	public static PlayerMusic MM = null;
 	public static int mplayIndex = -1;
 	public static boolean muteFlag = false;
 	public static FindMusicUi findMusicUi = null;
 	public static DownloadSongUi downloadMusicUi = null;
+	public static String uiFlag;
+	public static float volume = 0;
 
 }

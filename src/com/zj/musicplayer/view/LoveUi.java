@@ -20,6 +20,13 @@ import com.zj.musicplayer.model.SongInfoDao;
 import com.zj.musicplayer.utils.ConstantData;
 import com.zj.musicplayer.utils.DateUtil;
 
+/**
+ * 
+ * @description：喜欢歌曲的界面
+ * 
+ * @author ZJ
+ * @date 2020年5月3日 下午2:34:46
+ */
 public class LoveUi extends Composite {
 
 	private List<MusicItem> listMusicItems = new ArrayList<MusicItem>();
