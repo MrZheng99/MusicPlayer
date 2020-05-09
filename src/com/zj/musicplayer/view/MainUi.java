@@ -70,6 +70,8 @@ public class MainUi {
 
 	/**
 	 * Create contents of the window.
+	 * 
+	 * @wbp.parser.entryPoint
 	 */
 	protected void createContents() {
 		// 居中显示
@@ -920,5 +922,14 @@ public class MainUi {
 				compositeRight.layout();
 			}
 		});
+		progressBar.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseUp(MouseEvent e) {
+				ConstantData.MM.fastForward(e.x, progressBar.getSize().x);
+			}
+
+		});
+		;
 	}
 }

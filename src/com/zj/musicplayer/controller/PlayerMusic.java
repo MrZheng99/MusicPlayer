@@ -300,6 +300,19 @@ public class PlayerMusic {
 		});
 	}
 
+	/**
+	 * 快进到某一点播放
+	 * 
+	 * @param point
+	 */
+	public void fastForward(int currentPosition, int length) {
+		float proportion = (float) currentPosition / length;
+		long point = (long) (musicAllTime * 1000 * proportion);
+		ConstantData.clip.setMicrosecondPosition(point);
+		labelMusicCurrentTime.setText(DateUtil.millisecondToMinuteSecond(point));
+		progressBar.setSelection((int) (proportion * 100));
+	}
+
 	public void openMute() {
 		ConstantData.volume = gainControl.getValue();
 		gainControl.setValue(gainControl.getMinimum());
