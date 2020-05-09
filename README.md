@@ -1,4 +1,4 @@
-# 仿某音乐播放器
+# 仿某音乐播放器(PC版)
 ## 效果图
 ![播放效果图](https://github.com/MrZheng99/MusicPlayer/blob/master/src/images/rs_play.png)
 ![歌曲列表](https://github.com/MrZheng99/MusicPlayer/blob/master/src/images/rs_list.png)
